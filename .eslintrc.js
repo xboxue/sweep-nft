@@ -1,12 +1,39 @@
 module.exports = {
+  env: {
+    browser: true,
+    es2021: true,
+  },
   extends: [
-    "react-app", // Create React App base settings
-    "react-app/jest",
-    "eslint:recommended", // recommended ESLint rules
-    "plugin:@typescript-eslint/recommended", // recommended rules from @typescript-eslint/eslint-plugin
-    "plugin:prettier/recommended", // Enables eslint-plugin-prettier and eslint-config-prettier. This will display Prettier errors as ESLint errors. Make sure this is always the last configuration in the extends array.
+    "eslint:recommended",
+    "airbnb",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
   ],
-  rules: {},
+  parser: "@typescript-eslint/parser",
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+    },
+    ecmaVersion: 12,
+    sourceType: "module",
+  },
+  plugins: ["react", "@typescript-eslint", "react-hooks"],
+  rules: {
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "react/jsx-filename-extension": ["warn", { extensions: [".tsx"] }],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        ts: "never",
+        tsx: "never",
+      },
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+  },
   overrides: [
     {
       files: ["*.jsx", "*.tsx"],
@@ -15,4 +42,9 @@ module.exports = {
       },
     },
   ],
+  settings: {
+    "import/resolver": {
+      typescript: {},
+    },
+  },
 };
