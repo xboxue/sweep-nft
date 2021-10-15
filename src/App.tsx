@@ -1,11 +1,9 @@
-import React from "react";
-import "./App.css";
-import logo from "./logo.svg";
+import { CssBaseline } from "@mui/material";
 
 const App = () => (
-  <div className="App">
+  <>
+    <CssBaseline />
     <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
       <p>
         Edit <code>src/App.tsx</code> and save to reload.
       </p>
@@ -18,7 +16,7 @@ const App = () => (
         Learn React
       </a>
     </header>
-  </div>
+  </>
 );
 
 export default App;
