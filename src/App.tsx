@@ -1,21 +1,18 @@
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import AppLayout from "./layouts/AppLayout";
+import theme from "./styles/theme";
 
 const App = () => (
   <>
     <CssBaseline />
-    <header className="App-header">
-      <p>
-        Edit <code>src/App.tsx</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<AppLayout />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   </>
 );
 
