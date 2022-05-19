@@ -1,24 +1,21 @@
 import {
-  AppBar,
   Avatar,
   Box,
   Drawer,
   List,
   ListItemButton,
-  ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
-  Toolbar,
   Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
 
 const items = [
-  { title: "Project details", to: "" },
-  { title: "Upload images", to: "" },
-  { title: "Configure smart contract", to: "" },
+  { title: "Project details", to: "/details" },
+  { title: "Upload images", to: "/upload" },
+  { title: "Configure smart contract", to: "/smart-contract" },
   { title: "Minting site", to: "" },
   { title: "Deploy for testing", to: "" },
 ];
@@ -46,48 +43,27 @@ const AppLayout = () => {
           Log out
         </MenuItem>
       </Menu>
-      <AppBar
-        elevation={0}
-        position="fixed"
-        sx={{
-          bgcolor: theme => theme.palette.background.paper,
-          color: "inherit",
-          borderBottom: 1,
-          borderColor: theme => theme.palette.divider,
-        }}
-      >
-        <Toolbar>
-          <Typography
-            variant="subtitle1"
-            noWrap
-            component="div"
-            sx={{ mr: "auto" }}
-          >
-            Sweep
-          </Typography>
-          <ListItemButton
-            sx={{ flex: 0 }}
-            onClick={event => setAnchorEl(event.currentTarget)}
-          >
-            <Avatar sx={{ width: 32, height: 32 }} />
-            {/* <Typography sx={{ ml: 1 }} noWrap>
-              {user?.displayName}
-            </Typography> */}
-          </ListItemButton>
-        </Toolbar>
-      </AppBar>
       <Drawer
         variant="permanent"
         sx={{
           width: 240,
           flexShrink: 0,
           [`& .MuiDrawer-paper`]: { width: 240, boxSizing: "border-box" },
-          zIndex: theme => theme.zIndex.appBar - 1,
         }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: "auto" }}>
-          <List dense sx={{ px: 1 }}>
+        <Box sx={{ overflow: "auto", px: 1, py: 2 }}>
+          <ListItemButton
+            onClick={event => setAnchorEl(event.currentTarget)}
+            sx={{ borderRadius: 1 }}
+          >
+            <Avatar
+              sx={{ width: 24, height: 24, mr: 1 }}
+              src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB3aWR0aD0iMTAwcHgiIGhlaWdodD0iMTAwcHgiIHZpZXdCb3g9IjAgMCA4MCA4MCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIiBpZD0iMTEzNDQ5NDQzOTU4Ij4KICAgICAgPHN0b3Agc3RvcC1jb2xvcj0icmdiKDAsIDI1NSwgMjAwKSIgb2Zmc2V0PSIwJSI+PC9zdG9wPgogICAgICA8c3RvcCBzdG9wLWNvbG9yPSJyZ2IoMjAwLCAwLCAyNTUpIiBvZmZzZXQ9IjEwMCUiPjwvc3RvcD4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgPC9kZWZzPgogIDxnIHN0cm9rZT0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPgogICAgPHJlY3QgaWQ9IlJlY3RhbmdsZSIgZmlsbD0idXJsKCMxMTM0NDk0NDM5NTgpIiB4PSIwIiB5PSIwIiB3aWR0aD0iODAiIGhlaWdodD0iODAiPjwvcmVjdD4KICA8L2c+Cjwvc3ZnPg=="
+              alt="icon"
+            />
+            <Typography variant="subtitle2">Sweep</Typography>
+          </ListItemButton>
+          <List dense>
             {items.map(({ title, to }) => (
               <ListItemButton
                 key={title}
@@ -106,8 +82,7 @@ const AppLayout = () => {
         </Box>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1 }}>
-        <Toolbar />
-        <Box sx={{ p: 3 }}>
+        <Box>
           <Outlet />
         </Box>
       </Box>
