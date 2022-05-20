@@ -81,10 +81,11 @@ const AppLayout = () => {
           </List>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1 }}>
-        <Box>
-          <Outlet />
-        </Box>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, maxWidth: 640, mx: "auto", mt: 5, mb: 8 }}
+      >
+        <Outlet />
       </Box>
     </Box>
   );

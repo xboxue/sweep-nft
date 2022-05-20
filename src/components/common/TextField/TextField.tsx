@@ -11,7 +11,7 @@ import {
 
 const StyledInputLabel = styled(InputLabel)(({ theme }) => ({
   transform: "none",
-  ...theme.typography.subtitle2,
+  ...(theme.typography.subtitle2 as any),
   color: theme.palette.text.primary,
 }));
 

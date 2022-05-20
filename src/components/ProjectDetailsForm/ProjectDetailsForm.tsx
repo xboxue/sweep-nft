@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import { Formik } from "formik";
 import AppHeader from "../AppHeader/AppHeader";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
@@ -6,7 +6,10 @@ import FormikTextField from "../common/FormikTextField/FormikTextField";
 const ProjectDetailsForm = () => {
   return (
     <>
-      <AppHeader title="Project details" />
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Project Details
+      </Typography>
+      <Divider />
       <Formik
         initialValues={{ name: "", description: "" }}
         onSubmit={() => {
@@ -18,7 +21,7 @@ const ProjectDetailsForm = () => {
             spacing={2}
             component="form"
             onSubmit={formik.handleSubmit}
-            sx={{ p: 2 }}
+            sx={{ mt: 2 }}
           >
             <FormikTextField label="Name" field="name" />
             <FormikTextField label="Description" field="description" />

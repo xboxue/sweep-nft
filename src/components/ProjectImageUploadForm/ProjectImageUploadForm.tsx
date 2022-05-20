@@ -1,4 +1,4 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { NFTStorage } from "nft.storage";
 import { useRef, useState } from "react";
@@ -47,8 +47,11 @@ const ProjectImageUploadForm = () => {
 
   return (
     <>
-      <AppHeader title="Upload media" />
-      <Stack spacing={2} sx={{ p: 2 }}>
+      <Typography variant="h6" sx={{ mb: 1 }}>
+        Upload media
+      </Typography>
+      <Divider />
+      <Stack spacing={2} sx={{ mt: 2 }}>
         {nfts.length > 0 ? (
           <>
             <DataGrid
