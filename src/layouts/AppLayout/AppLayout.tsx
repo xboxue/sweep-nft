@@ -10,7 +10,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
+import { selectAccount } from "../../features/auth/authSlice";
 
 const items = [
   { title: "Project details", to: "/details" },
@@ -23,6 +25,12 @@ const items = [
 const AppLayout = () => {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const account = useSelector(selectAccount);
+  const savedAccount = localStorage.getItem("account");
+
+  if (!account && !savedAccount) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <Box sx={{ display: "flex" }}>
