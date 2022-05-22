@@ -1,3 +1,4 @@
+import { useClerk } from "@clerk/clerk-react";
 import {
   Avatar,
   Box,
@@ -10,9 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { useSelector } from "react-redux";
-import { Link, Navigate, Outlet, useLocation } from "react-router-dom";
-import { selectAccount } from "../../features/auth/authSlice";
+import { Link, Outlet, useLocation } from "react-router-dom";
 
 const items = [
   { title: "Project details", to: "/details" },
@@ -25,6 +24,7 @@ const items = [
 const AppLayout = () => {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
+  const { signOut } = useClerk();
 
   return (
     <Box sx={{ display: "flex" }}>
@@ -33,17 +33,7 @@ const AppLayout = () => {
         open={!!anchorEl}
         onClose={() => setAnchorEl(null)}
       >
-        <MenuItem
-          onClick={async () => {
-            try {
-              // await signOut();
-            } catch (error) {
-              console.log(error);
-            }
-          }}
-        >
-          Log out
-        </MenuItem>
+        <MenuItem onClick={() => signOut()}>Log out</MenuItem>
       </Menu>
       <Drawer
         variant="permanent"

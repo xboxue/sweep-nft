@@ -1,4 +1,5 @@
 import { useClerk, useSignIn, useSignUp } from "@clerk/clerk-react";
+import { EmailCodeFactor } from "@clerk/types";
 import { Box } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -54,9 +55,13 @@ function LoginPage() {
       identifier: email,
     });
 
+    const emailCodeFactor = signInAttempt.supportedFirstFactors.find(
+      ({ strategy }) => strategy === "email_code"
+    ) as EmailCodeFactor;
+
     await signInAttempt.prepareFirstFactor({
       strategy: "email_code",
-      emailAddressId: signInAttempt.supportedFirstFactors[0].emailAddressId,
+      emailAddressId: emailCodeFactor.emailAddressId,
     });
   };
 
@@ -68,7 +73,7 @@ function LoginPage() {
     await signUpAttempt.prepareEmailAddressVerification();
   };
 
-  const verifyEmail = async (email: string) => {
+  const signInWithEmail = async (email: string) => {
     if (!signIn || !signUp) throw new Error();
     setIsSignUp(true);
     setEmailError(null);
@@ -91,11 +96,26 @@ function LoginPage() {
     }
   };
 
+  const signInWithGoogle = () => {
+    if (!signIn) return;
+    signIn.authenticateWithRedirect({
+      strategy: "oauth_google",
+      redirectUrl: "/oauth-callback",
+      redirectUrlComplete: "/",
+    });
+  };
+
   return (
     <Box
     // sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}
     >
-      {step === 0 && <LoginForm onSubmit={verifyEmail} error={emailError} />}
+      {step === 0 && (
+        <LoginForm
+          signInWithEmail={signInWithEmail}
+          signInWithGoogle={signInWithGoogle}
+          error={emailError}
+        />
+      )}
       {step === 1 && (
         <LoginCodeForm
           onSubmit={verifyCode}

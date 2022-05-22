@@ -1,4 +1,9 @@
-import { ClerkProvider, SignedIn, SignedOut } from "@clerk/clerk-react";
+import {
+  AuthenticateWithRedirectCallback,
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+} from "@clerk/clerk-react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import ProjectDetailsForm from "./components/ProjectDetailsForm/ProjectDetailsForm";
@@ -35,6 +40,10 @@ const App = () => {
             <Routes>
               <Route path="/login" element={<LoginPage />} />
               <Route path="*" element={<Navigate to="/login" />} />
+              <Route
+                path="/oauth-callback"
+                element={<AuthenticateWithRedirectCallback />}
+              />
             </Routes>
           </SignedOut>
         </ClerkProvider>
