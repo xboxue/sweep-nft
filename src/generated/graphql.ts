@@ -132,7 +132,7 @@ export type Project = {
   metadata_cid?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  user_id: Scalars['String'];
 };
 
 /** aggregated selection of "project" */
@@ -168,7 +168,7 @@ export type Project_Bool_Exp = {
   metadata_cid?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  user_id?: InputMaybe<Uuid_Comparison_Exp>;
+  user_id?: InputMaybe<String_Comparison_Exp>;
 };
 
 /** unique or primary key constraints on table "project" */
@@ -187,7 +187,7 @@ export type Project_Insert_Input = {
   metadata_cid?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
-  user_id?: InputMaybe<Scalars['uuid']>;
+  user_id?: InputMaybe<Scalars['String']>;
 };
 
 /** aggregate max on columns */
@@ -199,7 +199,7 @@ export type Project_Max_Fields = {
   metadata_cid?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 /** aggregate min on columns */
@@ -211,7 +211,7 @@ export type Project_Min_Fields = {
   metadata_cid?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
-  user_id?: Maybe<Scalars['uuid']>;
+  user_id?: Maybe<Scalars['String']>;
 };
 
 /** response of any mutation on the table "project" */
@@ -272,7 +272,7 @@ export type Project_Set_Input = {
   metadata_cid?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
-  user_id?: InputMaybe<Scalars['uuid']>;
+  user_id?: InputMaybe<Scalars['String']>;
 };
 
 /** update columns of table "project" */
@@ -390,7 +390,14 @@ export type CreateProjectMutationVariables = Exact<{
 }>;
 
 
-export type CreateProjectMutation = { __typename?: 'mutation_root', insert_project_one?: { __typename?: 'project', id: any, created_at?: any | null, description?: string | null, metadata_cid?: string | null, name: string, updated_at?: any | null, user_id?: any | null } | null };
+export type CreateProjectMutation = { __typename?: 'mutation_root', insert_project_one?: { __typename?: 'project', id: any, created_at?: any | null, description?: string | null, metadata_cid?: string | null, name: string, updated_at?: any | null, user_id: string } | null };
+
+export type GetProjectQueryVariables = Exact<{
+  id: Scalars['uuid'];
+}>;
+
+
+export type GetProjectQuery = { __typename?: 'query_root', project_by_pk?: { __typename?: 'project', created_at?: any | null, description?: string | null, id: any, metadata_cid?: string | null, name: string, updated_at?: any | null } | null };
 
 
 export const CreateProjectDocument = gql`
@@ -432,3 +439,43 @@ export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const GetProjectDocument = gql`
+    query GetProject($id: uuid!) {
+  project_by_pk(id: $id) {
+    created_at
+    description
+    id
+    metadata_cid
+    name
+    updated_at
+  }
+}
+    `;
+
+/**
+ * __useGetProjectQuery__
+ *
+ * To run a query within a React component, call `useGetProjectQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetProjectQuery(baseOptions: Apollo.QueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+      }
+export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectQuery, GetProjectQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectQuery, GetProjectQueryVariables>(GetProjectDocument, options);
+        }
+export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
+export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
+export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;

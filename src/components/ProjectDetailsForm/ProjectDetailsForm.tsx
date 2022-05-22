@@ -1,6 +1,5 @@
 import { Divider, Stack, Typography } from "@mui/material";
 import { Formik } from "formik";
-import AppHeader from "../AppHeader/AppHeader";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
 
 const ProjectDetailsForm = () => {

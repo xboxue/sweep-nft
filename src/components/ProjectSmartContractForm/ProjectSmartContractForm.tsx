@@ -1,11 +1,11 @@
-import { Divider, Paper, Stack, Typography } from "@mui/material";
+import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { Formik } from "formik";
 import FormikSwitch from "../common/FormikSwitch/FormikSwitch";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
 
 const ProjectSmartContractForm = () => {
   return (
-    <>
+    <Box sx={{ maxWidth: 640, mx: "auto" }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         Configure smart contract
       </Typography>
@@ -87,7 +87,7 @@ const ProjectSmartContractForm = () => {
           </Stack>
         )}
       </Formik>
-    </>
+    </Box>
   );
 };
 

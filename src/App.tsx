@@ -12,7 +12,7 @@ import CreateProjectForm from "./components/CreateProjectForm/CreateProjectForm"
 import ProjectDetailsForm from "./components/ProjectDetailsForm/ProjectDetailsForm";
 import ProjectImageUploadForm from "./components/ProjectImageUploadForm/ProjectImageUploadForm";
 import ProjectSmartContractForm from "./components/ProjectSmartContractForm/ProjectSmartContractForm";
-import AppLayout from "./layouts/AppLayout/AppLayout";
+import ProjectLayout from "./layouts/ProjectLayout/ProjectLayout";
 import LoginPage from "./pages/LoginPage";
 import getApolloClient from "./services/apolloClient";
 import theme from "./styles/theme";
@@ -37,7 +37,7 @@ const App = () => {
               <ThemeProvider theme={theme}>
                 <SignedIn>
                   <Routes>
-                    <Route path="/project/:id" element={<AppLayout />}>
+                    <Route path="/project/:id" element={<ProjectLayout />}>
                       <Route path="details" element={<ProjectDetailsForm />} />
                       <Route
                         path="upload"
