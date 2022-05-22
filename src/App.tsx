@@ -8,6 +8,7 @@ import {
 } from "@clerk/clerk-react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
+import CreateProjectForm from "./components/CreateProjectForm/CreateProjectForm";
 import ProjectDetailsForm from "./components/ProjectDetailsForm/ProjectDetailsForm";
 import ProjectImageUploadForm from "./components/ProjectImageUploadForm/ProjectImageUploadForm";
 import ProjectSmartContractForm from "./components/ProjectSmartContractForm/ProjectSmartContractForm";
@@ -36,20 +37,21 @@ const App = () => {
               <ThemeProvider theme={theme}>
                 <SignedIn>
                   <Routes>
-                    <Route path="/" element={<AppLayout />}>
+                    <Route path="/project/:id" element={<AppLayout />}>
+                      <Route path="details" element={<ProjectDetailsForm />} />
                       <Route
-                        path="/:id/details"
-                        element={<ProjectDetailsForm />}
-                      />
-                      <Route
-                        path="/:id/upload"
+                        path="upload"
                         element={<ProjectImageUploadForm />}
                       />
                       <Route
-                        path="/:id/smart-contract"
+                        path="smart-contract"
                         element={<ProjectSmartContractForm />}
                       />
                     </Route>
+                    <Route
+                      path="/project/new"
+                      element={<CreateProjectForm />}
+                    />
                   </Routes>
                 </SignedIn>
                 <SignedOut>
