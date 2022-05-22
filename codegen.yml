@@ -1,0 +1,12 @@
+overwrite: true
+schema:
+  - https://close-rhino-89.hasura.app/v1/graphql:
+      headers:
+        x-hasura-admin-secret: "${AUTH_TOKEN}"
+documents: "src/graphql/**/*.ts"
+generates:
+  src/generated/graphql.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - "typescript-react-apollo"
