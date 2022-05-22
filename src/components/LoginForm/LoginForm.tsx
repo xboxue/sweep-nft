@@ -1,16 +1,21 @@
-import { Button, Stack, Typography } from "@mui/material";
+import { Alert, Button, Stack, Typography } from "@mui/material";
 import { Formik } from "formik";
+import * as yup from "yup";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
 
 interface Props {
   onSubmit: (email: string) => void;
+  error: string | null;
 }
 
-const LoginForm = ({ onSubmit }: Props) => {
+const LoginForm = ({ onSubmit, error }: Props) => {
   return (
     <Formik
       initialValues={{ email: "" }}
       onSubmit={values => onSubmit(values.email)}
+      validationSchema={yup.object().shape({
+        email: yup.string().email("Invalid email").required("Required"),
+      })}
     >
       {formik => (
         <Stack
@@ -24,8 +29,9 @@ const LoginForm = ({ onSubmit }: Props) => {
             <FormikTextField
               field="email"
               placeholder="Email"
-              // error={}
+              helperText={undefined}
             />
+            {error && <Alert severity="error">{error}</Alert>}
             <Button
               disabled={!formik.values.email || !!formik.errors.email}
               type="submit"
