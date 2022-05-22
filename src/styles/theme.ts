@@ -122,22 +122,6 @@ const theme = createTheme(
           },
         },
       },
-      MuiButton: {
-        variants: [
-          {
-            props: { variant: "contained" },
-            // props: { variant: "contained", color: "background" },
-            style: {
-              border: `1px solid rgba(186, 191, 195, 1)`,
-              borderBottomColor: "rgba(186, 191, 196, 1)",
-              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-              "&:hover": {
-                background: "rgba(246, 246, 247, 1)",
-              },
-            },
-          },
-        ],
-      },
     },
   },
   baseTheme

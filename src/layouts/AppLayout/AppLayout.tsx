@@ -25,12 +25,6 @@ const items = [
 const AppLayout = () => {
   const location = useLocation();
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement | null>(null);
-  const account = useSelector(selectAccount);
-  const savedAccount = localStorage.getItem("account");
-
-  if (!account && !savedAccount) {
-    return <Navigate to="/login" replace />;
-  }
 
   return (
     <Box sx={{ display: "flex" }}>

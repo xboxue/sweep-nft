@@ -1896,6 +1896,19 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@clerk/clerk-react@^3.2.18":
+  version "3.2.18"
+  resolved "https://registry.yarnpkg.com/@clerk/clerk-react/-/clerk-react-3.2.18.tgz#848e74755b67d4106ae8b00c6a5c414e12f7662d"
+  integrity sha512-yGxPevFuhhtSqiju7TiABuDIlyMQv964UeS3SsP+HHMFFSFwEoFGABNpJak5s4CL8xgWZzfZtL/gCIZM8qw+LA==
+  dependencies:
+    "@clerk/types" "^2.14.0"
+    tslib "^2.3.1"
+
+"@clerk/types@^2.14.0":
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/@clerk/types/-/types-2.14.0.tgz#ff0c38ef79fa94eb18821ab4561bc65c2c79d6f5"
+  integrity sha512-fLAd8N6Ohy9TNcJxLS34KBxDc7hcE7Im0Wl2jJOzxTx+5S+3T35TGsIcwBlDreC0WfZBJgPvKEGdiCrXFLuZrw==
+
 "@csstools/normalize.css@*":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-12.0.0.tgz#a9583a75c3f150667771f30b60d9f059473e62c4"
@@ -11551,7 +11564,7 @@ tslib@^2.0.3:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.3.1.tgz#e8a335add5ceae51aa261d32a490158ef042ef01"
   integrity sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==
 
-tslib@^2.4.0:
+tslib@^2.3.1, tslib@^2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.4.0.tgz#7cecaa7f073ce680a05847aa77be941098f36dc3"
   integrity sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==
