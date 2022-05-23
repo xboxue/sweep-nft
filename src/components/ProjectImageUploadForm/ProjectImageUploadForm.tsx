@@ -1,17 +1,17 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import { DataGrid, GridColumns } from "@mui/x-data-grid";
 import { sortBy, uniq } from "lodash";
 import { NFTStorage } from "nft.storage";
 import { useMemo, useRef, useState } from "react";
 import { DropzoneOptions, DropzoneRef } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import {
-  useGetProjectQuery,
   useSetProjectNftMetadataMutation,
+  useUpdateProjectMetadataCidMutation,
 } from "../../generated/graphql";
 import readFileAsync from "../../utils/readFileAsync";
 import Dropzone from "../common/Dropzone/Dropzone";
+import NFTMetadataTable from "../NFTMetadataTable/NFTMetadataTable";
 
 type Attribute = {
   trait_type: string;
@@ -19,27 +19,24 @@ type Attribute = {
   value: string;
 };
 
-type NFTMetadata = {
+export type NFTMetadata = {
   name: string;
   description: string;
   attributes: Attribute[];
   image: string;
-  external_url: string;
-  imageFile: File;
+  external_url?: string;
 };
+
+type NFTMetadataExtended = { imageFile: File } & NFTMetadata;
 
 const ProjectImageUploadForm = () => {
   const dropzoneRef = useRef<DropzoneRef>(null);
-  const [nftMetadata, setNftMetadata] = useState<NFTMetadata[]>([]);
+  const [nftMetadata, setNftMetadata] = useState<NFTMetadataExtended[]>([]);
   const [setProjectNftMetadata] = useSetProjectNftMetadataMutation();
+  const [updateProjectMetadataCid] = useUpdateProjectMetadataCidMutation();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-
   const { id } = useParams();
-  const { data } = useGetProjectQuery({
-    fetchPolicy: "cache-only",
-    variables: { id },
-  });
 
   const traits = useMemo(() => {
     return uniq(
@@ -60,26 +57,25 @@ const ProjectImageUploadForm = () => {
       const imageCid = await storage.storeDirectory(
         nftMetadata.map(nft => nft.imageFile)
       );
-      const metadataCid = await storage.storeDirectory(
-        nftMetadata.map(
-          (nft, index) =>
-            new File(
-              [
-                JSON.stringify({
-                  name: nft.name,
-                  description: nft.description,
-                  external_url: nft.external_url,
-                  attributes: nft.attributes,
-                  image: `ipfs://${imageCid}/${encodeURIComponent(nft.image)}`,
-                }),
-              ],
-              index.toString()
-            )
-        )
+      const ipfsUpload = storage.storeDirectory(
+        nftMetadata.map((nft, index) => {
+          return new File(
+            [
+              JSON.stringify({
+                name: nft.name,
+                description: nft.description,
+                external_url: nft.external_url,
+                attributes: nft.attributes,
+                image: `ipfs://${imageCid}/${encodeURIComponent(nft.image)}`,
+              }),
+            ],
+            index.toString()
+          );
+        })
       );
-      await setProjectNftMetadata({
+      const apiUpload = setProjectNftMetadata({
         variables: {
-          objects: nftMetadata.map((nft, index) => ({
+          input: nftMetadata.map((nft, index) => ({
             project_id: id,
             name: nft.name,
             description: nft.description,
@@ -90,6 +86,12 @@ const ProjectImageUploadForm = () => {
               data: nft.attributes,
             },
           })),
+        },
+      });
+
+      const [metadataCid] = await Promise.all([ipfsUpload, apiUpload]);
+      await updateProjectMetadataCid({
+        variables: {
           id,
           metadata_cid: metadataCid,
         },
@@ -104,6 +106,7 @@ const ProjectImageUploadForm = () => {
     const images = acceptedFiles.filter(
       file => file.type === "image/png" || file.type === "image/jpeg"
     );
+
     const imagesByName = images.reduce<Record<string, File>>((acc, file) => {
       acc[file.name] = file;
       return acc;
@@ -117,12 +120,9 @@ const ProjectImageUploadForm = () => {
       await Promise.all(files.map(readFileAsync))
     ).flatMap(result => JSON.parse(result));
 
+    // TODO: Add validation
     setNftMetadata(
-      metadata.map((nft, index) => ({
-        ...nft,
-        imageFile: imagesByName[nft.image],
-        id: index,
-      }))
+      metadata.map(nft => ({ ...nft, imageFile: imagesByName[nft.image] }))
     );
   };
 
@@ -135,40 +135,14 @@ const ProjectImageUploadForm = () => {
       <Stack spacing={2} sx={{ mt: 2 }}>
         {nftMetadata.length > 0 ? (
           <>
-            <DataGrid
-              autoHeight
-              columns={[
-                { field: "id", headerName: "Token ID" },
-                { field: "name", headerName: "Name", width: 200 },
-                { field: "description", headerName: "Description", width: 300 },
-                {
-                  field: "imageFile",
-                  headerName: "Image",
-                  renderCell: params => (
-                    <Box
-                      component="img"
-                      src={URL.createObjectURL(params.value)}
-                      sx={{
-                        objectFit: "contain",
-                        width: 40,
-                        height: 40,
-                        borderRadius: 1,
-                        border: 1,
-                        borderColor: theme => theme.palette.divider,
-                      }}
-                    />
-                  ),
-                },
-                ...(traits.map(trait => ({
-                  field: trait,
-                  headerName: trait,
-                  valueGetter: params =>
-                    params.row.attributes.find(
-                      attribute => attribute.trait_type === trait
-                    )?.value,
-                })) as GridColumns<NFTMetadata>),
-              ]}
-              rows={nftMetadata}
+            <NFTMetadataTable
+              rows={nftMetadata.map((nft, index) => ({
+                ...nft,
+                image: URL.createObjectURL(nft.imageFile),
+                token_id: index,
+                id: index,
+              }))}
+              traits={traits}
             />
             <Button onClick={() => setNftMetadata([])}>Reset</Button>
             <LoadingButton

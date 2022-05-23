@@ -10,10 +10,10 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import CreateProjectForm from "./components/CreateProjectForm/CreateProjectForm";
 import ProjectDetailsForm from "./components/ProjectDetailsForm/ProjectDetailsForm";
-import ProjectImageUploadForm from "./components/ProjectImageUploadForm/ProjectImageUploadForm";
 import ProjectSmartContractForm from "./components/ProjectSmartContractForm/ProjectSmartContractForm";
 import ProjectLayout from "./layouts/ProjectLayout/ProjectLayout";
 import LoginPage from "./pages/LoginPage";
+import ProjectNFTMetadataPage from "./pages/ProjectNFTMetadataPage/ProjectNFTMetadataPage";
 import getApolloClient from "./services/apolloClient";
 import theme from "./styles/theme";
 
@@ -41,7 +41,7 @@ const App = () => {
                       <Route path="details" element={<ProjectDetailsForm />} />
                       <Route
                         path="upload"
-                        element={<ProjectImageUploadForm />}
+                        element={<ProjectNFTMetadataPage />}
                       />
                       <Route
                         path="smart-contract"

@@ -1249,13 +1249,29 @@ export type CreateProjectMutationVariables = Exact<{
 export type CreateProjectMutation = { __typename?: 'mutation_root', insert_project_one?: { __typename?: 'project', id: any, created_at?: any | null, description?: string | null, metadata_cid?: string | null, name: string, updated_at?: any | null, user_id: string } | null };
 
 export type SetProjectNftMetadataMutationVariables = Exact<{
-  objects: Array<Nft_Metadata_Insert_Input> | Nft_Metadata_Insert_Input;
+  input: Array<Nft_Metadata_Insert_Input> | Nft_Metadata_Insert_Input;
+}>;
+
+
+export type SetProjectNftMetadataMutation = { __typename?: 'mutation_root', insert_nft_metadata?: { __typename?: 'nft_metadata_mutation_response', returning: Array<{ __typename?: 'nft_metadata', id: any }> } | null };
+
+export type UpdateProjectMetadataCidMutationVariables = Exact<{
   id: Scalars['uuid'];
   metadata_cid: Scalars['String'];
 }>;
 
 
-export type SetProjectNftMetadataMutation = { __typename?: 'mutation_root', insert_nft_metadata?: { __typename?: 'nft_metadata_mutation_response', returning: Array<{ __typename?: 'nft_metadata', id: any }> } | null, update_project_by_pk?: { __typename?: 'project', id: any, metadata_cid?: string | null } | null };
+export type UpdateProjectMetadataCidMutation = { __typename?: 'mutation_root', update_project_by_pk?: { __typename?: 'project', id: any, metadata_cid?: string | null } | null };
+
+export type GetNftMetadataQueryVariables = Exact<{
+  project_id: Scalars['uuid'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Nft_Metadata_Order_By> | Nft_Metadata_Order_By>;
+}>;
+
+
+export type GetNftMetadataQuery = { __typename?: 'query_root', nft_metadata: Array<{ __typename?: 'nft_metadata', description?: string | null, external_url?: string | null, id: any, image: string, name?: string | null, token_id: number, nft_attributes: Array<{ __typename?: 'nft_attribute', display_type?: string | null, id: any, trait_type: string, value: string }> }>, nft_attribute_aggregate: { __typename?: 'nft_attribute_aggregate', nodes: Array<{ __typename?: 'nft_attribute', trait_type: string }> } };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -1305,15 +1321,11 @@ export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProject
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
 export const SetProjectNftMetadataDocument = gql`
-    mutation SetProjectNFTMetadata($objects: [nft_metadata_insert_input!]!, $id: uuid!, $metadata_cid: String!) {
-  insert_nft_metadata(objects: $objects) {
+    mutation SetProjectNFTMetadata($input: [nft_metadata_insert_input!]!) {
+  insert_nft_metadata(objects: $input) {
     returning {
       id
     }
-  }
-  update_project_by_pk(pk_columns: {id: $id}, _set: {metadata_cid: $metadata_cid}) {
-    id
-    metadata_cid
   }
 }
     `;
@@ -1332,9 +1344,7 @@ export type SetProjectNftMetadataMutationFn = Apollo.MutationFunction<SetProject
  * @example
  * const [setProjectNftMetadataMutation, { data, loading, error }] = useSetProjectNftMetadataMutation({
  *   variables: {
- *      objects: // value for 'objects'
- *      id: // value for 'id'
- *      metadata_cid: // value for 'metadata_cid'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -1345,6 +1355,103 @@ export function useSetProjectNftMetadataMutation(baseOptions?: Apollo.MutationHo
 export type SetProjectNftMetadataMutationHookResult = ReturnType<typeof useSetProjectNftMetadataMutation>;
 export type SetProjectNftMetadataMutationResult = Apollo.MutationResult<SetProjectNftMetadataMutation>;
 export type SetProjectNftMetadataMutationOptions = Apollo.BaseMutationOptions<SetProjectNftMetadataMutation, SetProjectNftMetadataMutationVariables>;
+export const UpdateProjectMetadataCidDocument = gql`
+    mutation UpdateProjectMetadataCID($id: uuid!, $metadata_cid: String!) {
+  update_project_by_pk(pk_columns: {id: $id}, _set: {metadata_cid: $metadata_cid}) {
+    id
+    metadata_cid
+  }
+}
+    `;
+export type UpdateProjectMetadataCidMutationFn = Apollo.MutationFunction<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>;
+
+/**
+ * __useUpdateProjectMetadataCidMutation__
+ *
+ * To run a mutation, you first call `useUpdateProjectMetadataCidMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectMetadataCidMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProjectMetadataCidMutation, { data, loading, error }] = useUpdateProjectMetadataCidMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      metadata_cid: // value for 'metadata_cid'
+ *   },
+ * });
+ */
+export function useUpdateProjectMetadataCidMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>(UpdateProjectMetadataCidDocument, options);
+      }
+export type UpdateProjectMetadataCidMutationHookResult = ReturnType<typeof useUpdateProjectMetadataCidMutation>;
+export type UpdateProjectMetadataCidMutationResult = Apollo.MutationResult<UpdateProjectMetadataCidMutation>;
+export type UpdateProjectMetadataCidMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>;
+export const GetNftMetadataDocument = gql`
+    query GetNFTMetadata($project_id: uuid!, $limit: Int = 50, $offset: Int = 0, $order_by: [nft_metadata_order_by!] = {}) {
+  nft_metadata(
+    where: {project_id: {_eq: $project_id}}
+    order_by: $order_by
+    limit: $limit
+    offset: $offset
+  ) {
+    description
+    external_url
+    id
+    image
+    name
+    token_id
+    nft_attributes {
+      display_type
+      id
+      trait_type
+      value
+    }
+  }
+  nft_attribute_aggregate(
+    distinct_on: trait_type
+    where: {nft_metadatum: {project_id: {_eq: $project_id}}}
+  ) {
+    nodes {
+      trait_type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetNftMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetNftMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetNftMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetNftMetadataQuery({
+ *   variables: {
+ *      project_id: // value for 'project_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      order_by: // value for 'order_by'
+ *   },
+ * });
+ */
+export function useGetNftMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetNftMetadataQuery, GetNftMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetNftMetadataQuery, GetNftMetadataQueryVariables>(GetNftMetadataDocument, options);
+      }
+export function useGetNftMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNftMetadataQuery, GetNftMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetNftMetadataQuery, GetNftMetadataQueryVariables>(GetNftMetadataDocument, options);
+        }
+export type GetNftMetadataQueryHookResult = ReturnType<typeof useGetNftMetadataQuery>;
+export type GetNftMetadataLazyQueryHookResult = ReturnType<typeof useGetNftMetadataLazyQuery>;
+export type GetNftMetadataQueryResult = Apollo.QueryResult<GetNftMetadataQuery, GetNftMetadataQueryVariables>;
 export const GetProjectDocument = gql`
     query GetProject($id: uuid!) {
   project_by_pk(id: $id) {
