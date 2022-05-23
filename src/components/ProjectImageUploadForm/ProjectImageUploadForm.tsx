@@ -1,58 +1,107 @@
+import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { sortBy } from "lodash";
 import { NFTStorage } from "nft.storage";
 import { useRef, useState } from "react";
 import { DropzoneOptions, DropzoneRef } from "react-dropzone";
-import AppHeader from "../AppHeader/AppHeader";
+import { useParams } from "react-router-dom";
+import {
+  useGetProjectQuery,
+  useUpdateNftMetadataMutation,
+} from "../../generated/graphql";
+import readFileAsync from "../../utils/readFileAsync";
 import Dropzone from "../common/Dropzone/Dropzone";
 
-type NftMetadata = { name: string; description: string; image: string };
+type NFTMetadata = {
+  name: string;
+  description: string;
+  image: string;
+  imageFile: File;
+};
 
 const ProjectImageUploadForm = () => {
   const dropzoneRef = useRef<DropzoneRef>(null);
-  const [nfts, setNfts] = useState<NftMetadata[]>([]);
+  const [nftMetadata, setNftMetadata] = useState<NFTMetadata[]>([]);
+  const [updateNftMetadata] = useUpdateNftMetadataMutation();
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const handleUpload = () => {
+  const { id } = useParams();
+  const { data } = useGetProjectQuery({
+    fetchPolicy: "cache-only",
+    variables: { id },
+  });
+
+  const handleUpload = async () => {
     const storage = new NFTStorage({
       token:
         "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweEY0MjMyOTREZDFGODMxRWJlRWNDNURFNWU2ODk1ODhiMjVGZjAwMTAiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MjkzODgxMTExNCwibmFtZSI6IlN3ZWVwIn0.PIim12IYdaaPFVDyO9Z3t7ZPh_gKc5m62QCh-OPHGuk",
     });
+
+    setUploading(true);
+    try {
+      const imageCid = await storage.storeDirectory(
+        nftMetadata.map(nft => nft.imageFile)
+      );
+      const metadataCid = await storage.storeDirectory(
+        nftMetadata.map(
+          (nft, index) =>
+            new File(
+              [
+                JSON.stringify({
+                  name: nft.name,
+                  description: nft.description,
+                  image: `ipfs://${imageCid}/${encodeURIComponent(nft.image)}`,
+                }),
+              ],
+              index.toString()
+            )
+        )
+      );
+      await updateNftMetadata({ variables: { id, metadata_cid: metadataCid } });
+    } catch (error) {
+      setUploadError(error.message);
+    }
+    setUploading(false);
   };
 
   const handleDrop: DropzoneOptions["onDrop"] = async acceptedFiles => {
     const images = acceptedFiles.filter(
       file => file.type === "image/png" || file.type === "image/jpeg"
     );
-    const imageUrls = images.reduce<Record<string, string>>((acc, file) => {
-      acc[file.name] = URL.createObjectURL(file);
+    const imagesByName = images.reduce<Record<string, File>>((acc, file) => {
+      acc[file.name] = file;
       return acc;
     }, {});
 
-    const file = acceptedFiles.find(file => file.type === "application/json");
-    if (file) {
-      const reader = new FileReader();
-      reader.addEventListener("load", event => {
-        const result = reader.result as string;
-        setNfts(
-          (JSON.parse(result) as NftMetadata[]).map((nft, index) => ({
-            ...nft,
-            imageUrl: imageUrls[nft.image],
-            id: index,
-          }))
-        );
-      });
-      reader.readAsText(file);
-    }
+    const files = sortBy(
+      acceptedFiles.filter(file => file.type === "application/json"),
+      file => parseInt(file.name, 10)
+    );
+    const metadata: NFTMetadata[] = (
+      await Promise.all(files.map(readFileAsync))
+    )
+      .map(result => JSON.parse(result))
+      .flat();
+
+    setNftMetadata(
+      metadata.map((nft, index) => ({
+        ...nft,
+        imageFile: imagesByName[nft.image],
+        id: index,
+      }))
+    );
   };
 
   return (
-    <>
+    <Box sx={{ maxWidth: 800, mx: "auto" }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         Upload media
       </Typography>
       <Divider />
       <Stack spacing={2} sx={{ mt: 2 }}>
-        {nfts.length > 0 ? (
+        {nftMetadata.length > 0 ? (
           <>
             <DataGrid
               autoHeight
@@ -61,12 +110,12 @@ const ProjectImageUploadForm = () => {
                 { field: "name", headerName: "Name", width: 200 },
                 { field: "description", headerName: "Description", width: 300 },
                 {
-                  field: "imageUrl",
+                  field: "imageFile",
                   headerName: "Image",
                   renderCell: params => (
                     <Box
                       component="img"
-                      src={params.value}
+                      src={URL.createObjectURL(params.value)}
                       sx={{
                         objectFit: "contain",
                         width: 40,
@@ -79,10 +128,16 @@ const ProjectImageUploadForm = () => {
                   ),
                 },
               ]}
-              rows={nfts}
+              rows={nftMetadata}
             />
-            <Button onClick={() => setNfts([])}>Reset</Button>
-            <Button onClick={handleUpload}>Upload</Button>
+            <Button onClick={() => setNftMetadata([])}>Reset</Button>
+            <LoadingButton
+              loading={uploading}
+              variant="contained"
+              onClick={handleUpload}
+            >
+              Upload
+            </LoadingButton>
           </>
         ) : (
           <Dropzone
@@ -93,7 +148,7 @@ const ProjectImageUploadForm = () => {
           />
         )}
       </Stack>
-    </>
+    </Box>
   );
 };
 

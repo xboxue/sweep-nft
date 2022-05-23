@@ -392,6 +392,14 @@ export type CreateProjectMutationVariables = Exact<{
 
 export type CreateProjectMutation = { __typename?: 'mutation_root', insert_project_one?: { __typename?: 'project', id: any, created_at?: any | null, description?: string | null, metadata_cid?: string | null, name: string, updated_at?: any | null, user_id: string } | null };
 
+export type UpdateNftMetadataMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  metadata_cid: Scalars['String'];
+}>;
+
+
+export type UpdateNftMetadataMutation = { __typename?: 'mutation_root', update_project_by_pk?: { __typename?: 'project', id: any, metadata_cid?: string | null } | null };
+
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
 }>;
@@ -439,6 +447,41 @@ export function useCreateProjectMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateProjectMutationHookResult = ReturnType<typeof useCreateProjectMutation>;
 export type CreateProjectMutationResult = Apollo.MutationResult<CreateProjectMutation>;
 export type CreateProjectMutationOptions = Apollo.BaseMutationOptions<CreateProjectMutation, CreateProjectMutationVariables>;
+export const UpdateNftMetadataDocument = gql`
+    mutation UpdateNFTMetadata($id: uuid!, $metadata_cid: String!) {
+  update_project_by_pk(pk_columns: {id: $id}, _set: {metadata_cid: $metadata_cid}) {
+    id
+    metadata_cid
+  }
+}
+    `;
+export type UpdateNftMetadataMutationFn = Apollo.MutationFunction<UpdateNftMetadataMutation, UpdateNftMetadataMutationVariables>;
+
+/**
+ * __useUpdateNftMetadataMutation__
+ *
+ * To run a mutation, you first call `useUpdateNftMetadataMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateNftMetadataMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateNftMetadataMutation, { data, loading, error }] = useUpdateNftMetadataMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      metadata_cid: // value for 'metadata_cid'
+ *   },
+ * });
+ */
+export function useUpdateNftMetadataMutation(baseOptions?: Apollo.MutationHookOptions<UpdateNftMetadataMutation, UpdateNftMetadataMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateNftMetadataMutation, UpdateNftMetadataMutationVariables>(UpdateNftMetadataDocument, options);
+      }
+export type UpdateNftMetadataMutationHookResult = ReturnType<typeof useUpdateNftMetadataMutation>;
+export type UpdateNftMetadataMutationResult = Apollo.MutationResult<UpdateNftMetadataMutation>;
+export type UpdateNftMetadataMutationOptions = Apollo.BaseMutationOptions<UpdateNftMetadataMutation, UpdateNftMetadataMutationVariables>;
 export const GetProjectDocument = gql`
     query GetProject($id: uuid!) {
   project_by_pk(id: $id) {
