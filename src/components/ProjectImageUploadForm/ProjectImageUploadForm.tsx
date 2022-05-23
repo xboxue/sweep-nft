@@ -8,13 +8,14 @@ import { DropzoneOptions, DropzoneRef } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import {
   useGetProjectQuery,
-  useUpdateNftMetadataMutation,
+  useSetProjectNftMetadataMutation,
 } from "../../generated/graphql";
 import readFileAsync from "../../utils/readFileAsync";
 import Dropzone from "../common/Dropzone/Dropzone";
 
 type Attribute = {
   trait_type: string;
+  display_type: string;
   value: string;
 };
 
@@ -30,7 +31,7 @@ type NFTMetadata = {
 const ProjectImageUploadForm = () => {
   const dropzoneRef = useRef<DropzoneRef>(null);
   const [nftMetadata, setNftMetadata] = useState<NFTMetadata[]>([]);
-  const [updateNftMetadata] = useUpdateNftMetadataMutation();
+  const [setProjectNftMetadata] = useSetProjectNftMetadataMutation();
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
 
@@ -76,7 +77,23 @@ const ProjectImageUploadForm = () => {
             )
         )
       );
-      await updateNftMetadata({ variables: { id, metadata_cid: metadataCid } });
+      await setProjectNftMetadata({
+        variables: {
+          objects: nftMetadata.map((nft, index) => ({
+            project_id: id,
+            name: nft.name,
+            description: nft.description,
+            external_url: nft.external_url,
+            image: `ipfs://${imageCid}/${encodeURIComponent(nft.image)}`,
+            token_id: index,
+            nft_attributes: {
+              data: nft.attributes,
+            },
+          })),
+          id,
+          metadata_cid: metadataCid,
+        },
+      });
     } catch (error) {
       setUploadError(error.message);
     }
