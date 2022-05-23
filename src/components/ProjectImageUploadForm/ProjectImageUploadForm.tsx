@@ -1,9 +1,9 @@
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Divider, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { sortBy } from "lodash";
+import { DataGrid, GridColumns } from "@mui/x-data-grid";
+import { sortBy, uniq } from "lodash";
 import { NFTStorage } from "nft.storage";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { DropzoneOptions, DropzoneRef } from "react-dropzone";
 import { useParams } from "react-router-dom";
 import {
@@ -13,10 +13,17 @@ import {
 import readFileAsync from "../../utils/readFileAsync";
 import Dropzone from "../common/Dropzone/Dropzone";
 
+type Attribute = {
+  trait_type: string;
+  value: string;
+};
+
 type NFTMetadata = {
   name: string;
   description: string;
+  attributes: Attribute[];
   image: string;
+  external_url: string;
   imageFile: File;
 };
 
@@ -32,6 +39,14 @@ const ProjectImageUploadForm = () => {
     fetchPolicy: "cache-only",
     variables: { id },
   });
+
+  const traits = useMemo(() => {
+    return uniq(
+      nftMetadata
+        .flatMap(nft => nft.attributes)
+        .map(attribute => attribute.trait_type)
+    );
+  }, [nftMetadata]);
 
   const handleUpload = async () => {
     const storage = new NFTStorage({
@@ -52,6 +67,8 @@ const ProjectImageUploadForm = () => {
                 JSON.stringify({
                   name: nft.name,
                   description: nft.description,
+                  external_url: nft.external_url,
+                  attributes: nft.attributes,
                   image: `ipfs://${imageCid}/${encodeURIComponent(nft.image)}`,
                 }),
               ],
@@ -81,9 +98,7 @@ const ProjectImageUploadForm = () => {
     );
     const metadata: NFTMetadata[] = (
       await Promise.all(files.map(readFileAsync))
-    )
-      .map(result => JSON.parse(result))
-      .flat();
+    ).flatMap(result => JSON.parse(result));
 
     setNftMetadata(
       metadata.map((nft, index) => ({
@@ -95,7 +110,7 @@ const ProjectImageUploadForm = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, mx: "auto" }}>
+    <Box sx={{ mx: 8 }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
         Upload media
       </Typography>
@@ -127,6 +142,14 @@ const ProjectImageUploadForm = () => {
                     />
                   ),
                 },
+                ...(traits.map(trait => ({
+                  field: trait,
+                  headerName: trait,
+                  valueGetter: params =>
+                    params.row.attributes.find(
+                      attribute => attribute.trait_type === trait
+                    )?.value,
+                })) as GridColumns<NFTMetadata>),
               ]}
               rows={nftMetadata}
             />
