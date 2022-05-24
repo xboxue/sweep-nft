@@ -1,10 +1,10 @@
 import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
-import { formatEther } from "ethers/lib/utils";
 import { Formik } from "formik";
 import { useParams } from "react-router-dom";
 import {
   Smart_Contract_Settings,
-  useGetSmartContractSettingsQuery,
+  useGetProjectSmartContractSettingsQuery,
+  useUpdateProjectSmartContractSettingsMutation,
 } from "../../generated/graphql";
 import FormikSaveBar from "../common/FormikSaveBar/FormikSaveBar";
 import FormikSwitch from "../common/FormikSwitch/FormikSwitch";
@@ -17,10 +17,8 @@ const getInitialValues = (settings: Smart_Contract_Settings) => {
     hasPresaleTokenLimit: !!settings.presale_token_limit,
     hasMintPrice: !!settings.mint_price,
     hasWalletMintLimit: !!settings.wallet_mint_limit,
-    mintPrice: settings.mint_price ? formatEther(settings.mint_price) : "0.1",
-    presaleMintPrice: settings.presale_mint_price
-      ? formatEther(settings.presale_mint_price)
-      : "0.1",
+    mintPrice: settings.mint_price || "0.1",
+    presaleMintPrice: settings.presale_mint_price || "0.1",
     walletMintLimit: settings.wallet_mint_limit || 10,
     presaleTokenLimit: settings.presale_token_limit || 1000,
   };
@@ -28,9 +26,13 @@ const getInitialValues = (settings: Smart_Contract_Settings) => {
 
 const ProjectSmartContractForm = () => {
   const { id } = useParams();
-  const { data, loading, error } = useGetSmartContractSettingsQuery({
+  const { data, loading, error } = useGetProjectSmartContractSettingsQuery({
     variables: { project_id: id },
   });
+  const [
+    updateSmartContractSettings,
+    { loading: updating, error: updateError },
+  ] = useUpdateProjectSmartContractSettingsMutation();
 
   if (loading) return <Skeleton />;
 
@@ -42,8 +44,26 @@ const ProjectSmartContractForm = () => {
       <Divider />
       <Formik
         initialValues={getInitialValues(data?.smart_contract_settings[0])}
-        onSubmit={() => {
-          console.log();
+        enableReinitialize
+        onSubmit={values => {
+          updateSmartContractSettings({
+            variables: {
+              project_id: id,
+              input: {
+                has_allowlist: values.hasAllowlist,
+                mint_price: values.hasMintPrice ? values.mintPrice : null,
+                presale_mint_price: values.hasPresaleMintPrice
+                  ? values.presaleMintPrice
+                  : null,
+                wallet_mint_limit: values.hasWalletMintLimit
+                  ? values.walletMintLimit
+                  : null,
+                presale_token_limit: values.hasPresaleTokenLimit
+                  ? values.presaleTokenLimit
+                  : null,
+              },
+            },
+          });
         }}
       >
         {formik => (
@@ -110,7 +130,7 @@ const ProjectSmartContractForm = () => {
                 field="walletMintLimit"
               />
             )}
-            <FormikSaveBar />
+            <FormikSaveBar loading={updating} />
           </Stack>
         )}
       </Formik>

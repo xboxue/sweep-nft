@@ -1,11 +1,11 @@
 import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
-import { useGetNftMetadataQuery } from "../../generated/graphql";
+import { useGetProjectNftMetadataQuery } from "../../generated/graphql";
 import NFTMetadataTable from "../NFTMetadataTable/NFTMetadataTable";
 
 const ProjectNFTMetadata = () => {
   const { id } = useParams();
-  const { data, loading, error } = useGetNftMetadataQuery({
+  const { data, loading, error } = useGetProjectNftMetadataQuery({
     variables: {
       project_id: id,
     },

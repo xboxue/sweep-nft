@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
-const GET_SMART_CONTRACT_SETTINGS = gql`
-  query GetSmartContractSettings($project_id: uuid!) {
+const GET_PROJECT_SMART_CONTRACT_SETTINGS = gql`
+  query GetProjectSmartContractSettings($project_id: uuid!) {
     smart_contract_settings(where: { project_id: { _eq: $project_id } }) {
       id
       has_allowlist
@@ -14,4 +14,4 @@ const GET_SMART_CONTRACT_SETTINGS = gql`
   }
 `;
 
-export default GET_SMART_CONTRACT_SETTINGS;
+export default GET_PROJECT_SMART_CONTRACT_SETTINGS;

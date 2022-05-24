@@ -908,6 +908,8 @@ export type Project = {
   nft_metadata: Array<Nft_Metadata>;
   /** An aggregate relationship */
   nft_metadata_aggregate: Nft_Metadata_Aggregate;
+  /** An object relationship */
+  smart_contract_setting?: Maybe<Smart_Contract_Settings>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id: Scalars['String'];
 };
@@ -965,6 +967,7 @@ export type Project_Bool_Exp = {
   metadata_cid?: InputMaybe<String_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
   nft_metadata?: InputMaybe<Nft_Metadata_Bool_Exp>;
+  smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user_id?: InputMaybe<String_Comparison_Exp>;
 };
@@ -985,6 +988,7 @@ export type Project_Insert_Input = {
   metadata_cid?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   nft_metadata?: InputMaybe<Nft_Metadata_Arr_Rel_Insert_Input>;
+  smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Obj_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   user_id?: InputMaybe<Scalars['String']>;
 };
@@ -1044,6 +1048,7 @@ export type Project_Order_By = {
   metadata_cid?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
   nft_metadata_aggregate?: InputMaybe<Nft_Metadata_Aggregate_Order_By>;
+  smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -1226,10 +1231,12 @@ export type Smart_Contract_Settings = {
   created_at: Scalars['timestamptz'];
   has_allowlist: Scalars['Boolean'];
   id: Scalars['uuid'];
-  mint_price?: Maybe<Scalars['Int']>;
-  presale_mint_price?: Maybe<Scalars['Int']>;
+  mint_price?: Maybe<Scalars['String']>;
+  presale_mint_price?: Maybe<Scalars['String']>;
   presale_token_limit?: Maybe<Scalars['Int']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
+  /** An object relationship */
+  project: Project;
   project_id: Scalars['uuid'];
   updated_at: Scalars['timestamptz'];
   wallet_mint_limit?: Maybe<Scalars['Int']>;
@@ -1268,8 +1275,6 @@ export type Smart_Contract_Settings_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Smart_Contract_Settings_Avg_Fields = {
   __typename?: 'smart_contract_settings_avg_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1283,10 +1288,11 @@ export type Smart_Contract_Settings_Bool_Exp = {
   created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   has_allowlist?: InputMaybe<Boolean_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
-  mint_price?: InputMaybe<Int_Comparison_Exp>;
-  presale_mint_price?: InputMaybe<Int_Comparison_Exp>;
+  mint_price?: InputMaybe<String_Comparison_Exp>;
+  presale_mint_price?: InputMaybe<String_Comparison_Exp>;
   presale_token_limit?: InputMaybe<Int_Comparison_Exp>;
   presale_wallet_mint_limit?: InputMaybe<Int_Comparison_Exp>;
+  project?: InputMaybe<Project_Bool_Exp>;
   project_id?: InputMaybe<Uuid_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   wallet_mint_limit?: InputMaybe<Int_Comparison_Exp>;
@@ -1302,8 +1308,6 @@ export enum Smart_Contract_Settings_Constraint {
 
 /** input type for incrementing numeric columns in table "smart_contract_settings" */
 export type Smart_Contract_Settings_Inc_Input = {
-  mint_price?: InputMaybe<Scalars['Int']>;
-  presale_mint_price?: InputMaybe<Scalars['Int']>;
   presale_token_limit?: InputMaybe<Scalars['Int']>;
   presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
   wallet_mint_limit?: InputMaybe<Scalars['Int']>;
@@ -1314,10 +1318,11 @@ export type Smart_Contract_Settings_Insert_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
   has_allowlist?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
-  mint_price?: InputMaybe<Scalars['Int']>;
-  presale_mint_price?: InputMaybe<Scalars['Int']>;
+  mint_price?: InputMaybe<Scalars['String']>;
+  presale_mint_price?: InputMaybe<Scalars['String']>;
   presale_token_limit?: InputMaybe<Scalars['Int']>;
   presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+  project?: InputMaybe<Project_Obj_Rel_Insert_Input>;
   project_id?: InputMaybe<Scalars['uuid']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   wallet_mint_limit?: InputMaybe<Scalars['Int']>;
@@ -1328,8 +1333,8 @@ export type Smart_Contract_Settings_Max_Fields = {
   __typename?: 'smart_contract_settings_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
-  mint_price?: Maybe<Scalars['Int']>;
-  presale_mint_price?: Maybe<Scalars['Int']>;
+  mint_price?: Maybe<Scalars['String']>;
+  presale_mint_price?: Maybe<Scalars['String']>;
   presale_token_limit?: Maybe<Scalars['Int']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
   project_id?: Maybe<Scalars['uuid']>;
@@ -1342,8 +1347,8 @@ export type Smart_Contract_Settings_Min_Fields = {
   __typename?: 'smart_contract_settings_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
   id?: Maybe<Scalars['uuid']>;
-  mint_price?: Maybe<Scalars['Int']>;
-  presale_mint_price?: Maybe<Scalars['Int']>;
+  mint_price?: Maybe<Scalars['String']>;
+  presale_mint_price?: Maybe<Scalars['String']>;
   presale_token_limit?: Maybe<Scalars['Int']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
   project_id?: Maybe<Scalars['uuid']>;
@@ -1358,6 +1363,13 @@ export type Smart_Contract_Settings_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Smart_Contract_Settings>;
+};
+
+/** input type for inserting object relation for remote table "smart_contract_settings" */
+export type Smart_Contract_Settings_Obj_Rel_Insert_Input = {
+  data: Smart_Contract_Settings_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Smart_Contract_Settings_On_Conflict>;
 };
 
 /** on_conflict condition type for table "smart_contract_settings" */
@@ -1376,6 +1388,7 @@ export type Smart_Contract_Settings_Order_By = {
   presale_mint_price?: InputMaybe<Order_By>;
   presale_token_limit?: InputMaybe<Order_By>;
   presale_wallet_mint_limit?: InputMaybe<Order_By>;
+  project?: InputMaybe<Project_Order_By>;
   project_id?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   wallet_mint_limit?: InputMaybe<Order_By>;
@@ -1415,8 +1428,8 @@ export type Smart_Contract_Settings_Set_Input = {
   created_at?: InputMaybe<Scalars['timestamptz']>;
   has_allowlist?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['uuid']>;
-  mint_price?: InputMaybe<Scalars['Int']>;
-  presale_mint_price?: InputMaybe<Scalars['Int']>;
+  mint_price?: InputMaybe<Scalars['String']>;
+  presale_mint_price?: InputMaybe<Scalars['String']>;
   presale_token_limit?: InputMaybe<Scalars['Int']>;
   presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['uuid']>;
@@ -1427,8 +1440,6 @@ export type Smart_Contract_Settings_Set_Input = {
 /** aggregate stddev on columns */
 export type Smart_Contract_Settings_Stddev_Fields = {
   __typename?: 'smart_contract_settings_stddev_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1437,8 +1448,6 @@ export type Smart_Contract_Settings_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Smart_Contract_Settings_Stddev_Pop_Fields = {
   __typename?: 'smart_contract_settings_stddev_pop_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1447,8 +1456,6 @@ export type Smart_Contract_Settings_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Smart_Contract_Settings_Stddev_Samp_Fields = {
   __typename?: 'smart_contract_settings_stddev_samp_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1457,8 +1464,6 @@ export type Smart_Contract_Settings_Stddev_Samp_Fields = {
 /** aggregate sum on columns */
 export type Smart_Contract_Settings_Sum_Fields = {
   __typename?: 'smart_contract_settings_sum_fields';
-  mint_price?: Maybe<Scalars['Int']>;
-  presale_mint_price?: Maybe<Scalars['Int']>;
   presale_token_limit?: Maybe<Scalars['Int']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
   wallet_mint_limit?: Maybe<Scalars['Int']>;
@@ -1491,8 +1496,6 @@ export enum Smart_Contract_Settings_Update_Column {
 /** aggregate var_pop on columns */
 export type Smart_Contract_Settings_Var_Pop_Fields = {
   __typename?: 'smart_contract_settings_var_pop_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1501,8 +1504,6 @@ export type Smart_Contract_Settings_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Smart_Contract_Settings_Var_Samp_Fields = {
   __typename?: 'smart_contract_settings_var_samp_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1511,8 +1512,6 @@ export type Smart_Contract_Settings_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Smart_Contract_Settings_Variance_Fields = {
   __typename?: 'smart_contract_settings_variance_fields';
-  mint_price?: Maybe<Scalars['Float']>;
-  presale_mint_price?: Maybe<Scalars['Float']>;
   presale_token_limit?: Maybe<Scalars['Float']>;
   presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
   wallet_mint_limit?: Maybe<Scalars['Float']>;
@@ -1686,15 +1685,13 @@ export type UpdateProjectMetadataCidMutationVariables = Exact<{
 
 export type UpdateProjectMetadataCidMutation = { __typename?: 'mutation_root', update_project_by_pk?: { __typename?: 'project', id: any, metadata_cid?: string | null } | null };
 
-export type GetNftMetadataQueryVariables = Exact<{
+export type UpdateProjectSmartContractSettingsMutationVariables = Exact<{
   project_id: Scalars['uuid'];
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Nft_Metadata_Order_By> | Nft_Metadata_Order_By>;
+  input: Smart_Contract_Settings_Set_Input;
 }>;
 
 
-export type GetNftMetadataQuery = { __typename?: 'query_root', nft_metadata: Array<{ __typename?: 'nft_metadata', description?: string | null, external_url?: string | null, id: any, image: string, name?: string | null, token_id: number, nft_attributes: Array<{ __typename?: 'nft_attribute', display_type?: string | null, id: any, trait_type: string, value: string }> }>, nft_attribute_aggregate: { __typename?: 'nft_attribute_aggregate', nodes: Array<{ __typename?: 'nft_attribute', trait_type: string }> } };
+export type UpdateProjectSmartContractSettingsMutation = { __typename?: 'mutation_root', update_smart_contract_settings?: { __typename?: 'smart_contract_settings_mutation_response', returning: Array<{ __typename?: 'smart_contract_settings', has_allowlist: boolean, id: any, mint_price?: string | null, presale_mint_price?: string | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }> } | null };
 
 export type GetProjectQueryVariables = Exact<{
   id: Scalars['uuid'];
@@ -1703,12 +1700,22 @@ export type GetProjectQueryVariables = Exact<{
 
 export type GetProjectQuery = { __typename?: 'query_root', project_by_pk?: { __typename?: 'project', created_at?: any | null, description?: string | null, id: any, metadata_cid?: string | null, name: string, updated_at?: any | null } | null };
 
-export type GetSmartContractSettingsQueryVariables = Exact<{
+export type GetProjectNftMetadataQueryVariables = Exact<{
+  project_id: Scalars['uuid'];
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Nft_Metadata_Order_By> | Nft_Metadata_Order_By>;
+}>;
+
+
+export type GetProjectNftMetadataQuery = { __typename?: 'query_root', nft_metadata: Array<{ __typename?: 'nft_metadata', description?: string | null, external_url?: string | null, id: any, image: string, name?: string | null, token_id: number, nft_attributes: Array<{ __typename?: 'nft_attribute', display_type?: string | null, id: any, trait_type: string, value: string }> }>, nft_attribute_aggregate: { __typename?: 'nft_attribute_aggregate', nodes: Array<{ __typename?: 'nft_attribute', trait_type: string }> } };
+
+export type GetProjectSmartContractSettingsQueryVariables = Exact<{
   project_id: Scalars['uuid'];
 }>;
 
 
-export type GetSmartContractSettingsQuery = { __typename?: 'query_root', smart_contract_settings: Array<{ __typename?: 'smart_contract_settings', id: any, has_allowlist: boolean, mint_price?: number | null, presale_mint_price?: number | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }> };
+export type GetProjectSmartContractSettingsQuery = { __typename?: 'query_root', smart_contract_settings: Array<{ __typename?: 'smart_contract_settings', id: any, has_allowlist: boolean, mint_price?: string | null, presale_mint_price?: string | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }> };
 
 
 export const CreateProjectDocument = gql`
@@ -1820,68 +1827,51 @@ export function useUpdateProjectMetadataCidMutation(baseOptions?: Apollo.Mutatio
 export type UpdateProjectMetadataCidMutationHookResult = ReturnType<typeof useUpdateProjectMetadataCidMutation>;
 export type UpdateProjectMetadataCidMutationResult = Apollo.MutationResult<UpdateProjectMetadataCidMutation>;
 export type UpdateProjectMetadataCidMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>;
-export const GetNftMetadataDocument = gql`
-    query GetNFTMetadata($project_id: uuid!, $limit: Int, $offset: Int = 0, $order_by: [nft_metadata_order_by!] = {}) {
-  nft_metadata(
+export const UpdateProjectSmartContractSettingsDocument = gql`
+    mutation UpdateProjectSmartContractSettings($project_id: uuid!, $input: smart_contract_settings_set_input!) {
+  update_smart_contract_settings(
     where: {project_id: {_eq: $project_id}}
-    order_by: $order_by
-    limit: $limit
-    offset: $offset
+    _set: $input
   ) {
-    description
-    external_url
-    id
-    image
-    name
-    token_id
-    nft_attributes {
-      display_type
+    returning {
+      has_allowlist
       id
-      trait_type
-      value
-    }
-  }
-  nft_attribute_aggregate(
-    distinct_on: trait_type
-    where: {nft_metadatum: {project_id: {_eq: $project_id}}}
-  ) {
-    nodes {
-      trait_type
+      mint_price
+      presale_mint_price
+      presale_token_limit
+      presale_wallet_mint_limit
+      wallet_mint_limit
     }
   }
 }
     `;
+export type UpdateProjectSmartContractSettingsMutationFn = Apollo.MutationFunction<UpdateProjectSmartContractSettingsMutation, UpdateProjectSmartContractSettingsMutationVariables>;
 
 /**
- * __useGetNftMetadataQuery__
+ * __useUpdateProjectSmartContractSettingsMutation__
  *
- * To run a query within a React component, call `useGetNftMetadataQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetNftMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useUpdateProjectSmartContractSettingsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProjectSmartContractSettingsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useGetNftMetadataQuery({
+ * const [updateProjectSmartContractSettingsMutation, { data, loading, error }] = useUpdateProjectSmartContractSettingsMutation({
  *   variables: {
  *      project_id: // value for 'project_id'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *      order_by: // value for 'order_by'
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useGetNftMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetNftMetadataQuery, GetNftMetadataQueryVariables>) {
+export function useUpdateProjectSmartContractSettingsMutation(baseOptions?: Apollo.MutationHookOptions<UpdateProjectSmartContractSettingsMutation, UpdateProjectSmartContractSettingsMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetNftMetadataQuery, GetNftMetadataQueryVariables>(GetNftMetadataDocument, options);
+        return Apollo.useMutation<UpdateProjectSmartContractSettingsMutation, UpdateProjectSmartContractSettingsMutationVariables>(UpdateProjectSmartContractSettingsDocument, options);
       }
-export function useGetNftMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetNftMetadataQuery, GetNftMetadataQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetNftMetadataQuery, GetNftMetadataQueryVariables>(GetNftMetadataDocument, options);
-        }
-export type GetNftMetadataQueryHookResult = ReturnType<typeof useGetNftMetadataQuery>;
-export type GetNftMetadataLazyQueryHookResult = ReturnType<typeof useGetNftMetadataLazyQuery>;
-export type GetNftMetadataQueryResult = Apollo.QueryResult<GetNftMetadataQuery, GetNftMetadataQueryVariables>;
+export type UpdateProjectSmartContractSettingsMutationHookResult = ReturnType<typeof useUpdateProjectSmartContractSettingsMutation>;
+export type UpdateProjectSmartContractSettingsMutationResult = Apollo.MutationResult<UpdateProjectSmartContractSettingsMutation>;
+export type UpdateProjectSmartContractSettingsMutationOptions = Apollo.BaseMutationOptions<UpdateProjectSmartContractSettingsMutation, UpdateProjectSmartContractSettingsMutationVariables>;
 export const GetProjectDocument = gql`
     query GetProject($id: uuid!) {
   project_by_pk(id: $id) {
@@ -1922,8 +1912,70 @@ export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
-export const GetSmartContractSettingsDocument = gql`
-    query GetSmartContractSettings($project_id: uuid!) {
+export const GetProjectNftMetadataDocument = gql`
+    query GetProjectNFTMetadata($project_id: uuid!, $limit: Int, $offset: Int = 0, $order_by: [nft_metadata_order_by!] = {}) {
+  nft_metadata(
+    where: {project_id: {_eq: $project_id}}
+    order_by: $order_by
+    limit: $limit
+    offset: $offset
+  ) {
+    description
+    external_url
+    id
+    image
+    name
+    token_id
+    nft_attributes {
+      display_type
+      id
+      trait_type
+      value
+    }
+  }
+  nft_attribute_aggregate(
+    distinct_on: trait_type
+    where: {nft_metadatum: {project_id: {_eq: $project_id}}}
+  ) {
+    nodes {
+      trait_type
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetProjectNftMetadataQuery__
+ *
+ * To run a query within a React component, call `useGetProjectNftMetadataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectNftMetadataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetProjectNftMetadataQuery({
+ *   variables: {
+ *      project_id: // value for 'project_id'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      order_by: // value for 'order_by'
+ *   },
+ * });
+ */
+export function useGetProjectNftMetadataQuery(baseOptions: Apollo.QueryHookOptions<GetProjectNftMetadataQuery, GetProjectNftMetadataQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetProjectNftMetadataQuery, GetProjectNftMetadataQueryVariables>(GetProjectNftMetadataDocument, options);
+      }
+export function useGetProjectNftMetadataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectNftMetadataQuery, GetProjectNftMetadataQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetProjectNftMetadataQuery, GetProjectNftMetadataQueryVariables>(GetProjectNftMetadataDocument, options);
+        }
+export type GetProjectNftMetadataQueryHookResult = ReturnType<typeof useGetProjectNftMetadataQuery>;
+export type GetProjectNftMetadataLazyQueryHookResult = ReturnType<typeof useGetProjectNftMetadataLazyQuery>;
+export type GetProjectNftMetadataQueryResult = Apollo.QueryResult<GetProjectNftMetadataQuery, GetProjectNftMetadataQueryVariables>;
+export const GetProjectSmartContractSettingsDocument = gql`
+    query GetProjectSmartContractSettings($project_id: uuid!) {
   smart_contract_settings(where: {project_id: {_eq: $project_id}}) {
     id
     has_allowlist
@@ -1937,29 +1989,29 @@ export const GetSmartContractSettingsDocument = gql`
     `;
 
 /**
- * __useGetSmartContractSettingsQuery__
+ * __useGetProjectSmartContractSettingsQuery__
  *
- * To run a query within a React component, call `useGetSmartContractSettingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetSmartContractSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetProjectSmartContractSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetProjectSmartContractSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetSmartContractSettingsQuery({
+ * const { data, loading, error } = useGetProjectSmartContractSettingsQuery({
  *   variables: {
  *      project_id: // value for 'project_id'
  *   },
  * });
  */
-export function useGetSmartContractSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>) {
+export function useGetProjectSmartContractSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetProjectSmartContractSettingsQuery, GetProjectSmartContractSettingsQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>(GetSmartContractSettingsDocument, options);
+        return Apollo.useQuery<GetProjectSmartContractSettingsQuery, GetProjectSmartContractSettingsQueryVariables>(GetProjectSmartContractSettingsDocument, options);
       }
-export function useGetSmartContractSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>) {
+export function useGetProjectSmartContractSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetProjectSmartContractSettingsQuery, GetProjectSmartContractSettingsQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>(GetSmartContractSettingsDocument, options);
+          return Apollo.useLazyQuery<GetProjectSmartContractSettingsQuery, GetProjectSmartContractSettingsQueryVariables>(GetProjectSmartContractSettingsDocument, options);
         }
-export type GetSmartContractSettingsQueryHookResult = ReturnType<typeof useGetSmartContractSettingsQuery>;
-export type GetSmartContractSettingsLazyQueryHookResult = ReturnType<typeof useGetSmartContractSettingsLazyQuery>;
-export type GetSmartContractSettingsQueryResult = Apollo.QueryResult<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>;
+export type GetProjectSmartContractSettingsQueryHookResult = ReturnType<typeof useGetProjectSmartContractSettingsQuery>;
+export type GetProjectSmartContractSettingsLazyQueryHookResult = ReturnType<typeof useGetProjectSmartContractSettingsLazyQuery>;
+export type GetProjectSmartContractSettingsQueryResult = Apollo.QueryResult<GetProjectSmartContractSettingsQuery, GetProjectSmartContractSettingsQueryVariables>;
