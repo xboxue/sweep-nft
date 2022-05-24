@@ -1,11 +1,9 @@
-import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useGetNftMetadataQuery } from "../../generated/graphql";
 import NFTMetadataTable from "../NFTMetadataTable/NFTMetadataTable";
 
 const ProjectNFTMetadata = () => {
-  const [pageSize, setPageSize] = useState(10);
   const { id } = useParams();
   const { data, loading, error } = useGetNftMetadataQuery({
     variables: {

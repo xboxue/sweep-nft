@@ -69,7 +69,9 @@ const ProjectLayout = () => {
                 key={title}
                 component={Link}
                 to={to}
-                selected={location.pathname === to}
+                selected={
+                  location.pathname.split("/").pop() === to.split("/").pop()
+                }
                 sx={{ borderRadius: 1, my: "2px" }}
               >
                 {/* <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>

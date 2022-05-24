@@ -1,9 +1,42 @@
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Divider,
+  Paper,
+  Skeleton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { Formik } from "formik";
+import { useParams } from "react-router-dom";
+import {
+  Smart_Contract_Settings,
+  useGetSmartContractSettingsQuery,
+} from "../../generated/graphql";
 import FormikSwitch from "../common/FormikSwitch/FormikSwitch";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
 
+const getInitialValues = (settings: Smart_Contract_Settings) => {
+  return {
+    hasAllowlist: settings.has_allowlist,
+    hasPresaleMintPrice: !!settings.presale_mint_price,
+    hasPresaleTokenLimit: !!settings.presale_token_limit,
+    hasMintPrice: !!settings.mint_price,
+    hasWalletMintLimit: !!settings.wallet_mint_limit,
+    mintPrice: settings.mint_price || 0.1,
+    presaleMintPrice: settings.presale_mint_price || 0.1,
+    walletMintLimit: settings.wallet_mint_limit || 10,
+    presaleTokenLimit: settings.presale_token_limit || 1000,
+  };
+};
+
 const ProjectSmartContractForm = () => {
+  const { id } = useParams();
+  const { data, loading, error } = useGetSmartContractSettingsQuery({
+    variables: { project_id: id },
+  });
+
+  if (loading) return <Skeleton />;
+
   return (
     <Box sx={{ maxWidth: 640, mx: "auto" }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
@@ -11,17 +44,7 @@ const ProjectSmartContractForm = () => {
       </Typography>
       <Divider />
       <Formik
-        initialValues={{
-          hasAllowlist: true,
-          hasPresaleMintPrice: false,
-          hasPresaleLimit: false,
-          hasMintPrice: false,
-          hasWalletMintLimit: false,
-          mintPrice: 0.1,
-          presaleMintPrice: 0.1,
-          mintLimit: 10,
-          presaleLimit: 1000,
-        }}
+        initialValues={getInitialValues(data?.smart_contract_settings)}
         onSubmit={() => {
           console.log();
         }}
@@ -59,12 +82,15 @@ const ProjectSmartContractForm = () => {
                   />
                 )}
                 <FormikSwitch
-                  title="Limit presale mints"
-                  description="Set a limit on the number of mints during presale."
-                  field="hasPresaleLimit"
+                  title="Limit presale token mints"
+                  description="Set a limit on the number of tokens that can be minted during presale."
+                  field="hasPresaleTokenLimit"
                 />
-                {formik.values.hasPresaleLimit && (
-                  <FormikTextField label="Presale limit" field="presaleLimit" />
+                {formik.values.hasPresaleTokenLimit && (
+                  <FormikTextField
+                    label="Presale token limit"
+                    field="presaleTokenLimit"
+                  />
                 )}
               </Stack>
             )}
@@ -82,7 +108,10 @@ const ProjectSmartContractForm = () => {
               field="hasWalletMintLimit"
             />
             {formik.values.hasWalletMintLimit && (
-              <FormikTextField label="Wallet mint limit" field="mintLimit" />
+              <FormikTextField
+                label="Wallet mint limit"
+                field="walletMintLimit"
+              />
             )}
           </Stack>
         )}

@@ -17,6 +17,19 @@ export type Scalars = {
   uuid: any;
 };
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_Comparison_Exp = {
+  _eq?: InputMaybe<Scalars['Boolean']>;
+  _gt?: InputMaybe<Scalars['Boolean']>;
+  _gte?: InputMaybe<Scalars['Boolean']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['Boolean']>;
+  _lte?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Scalars['Boolean']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['Int']>;
@@ -78,6 +91,10 @@ export type Mutation_Root = {
   delete_project?: Maybe<Project_Mutation_Response>;
   /** delete single row from the table: "project" */
   delete_project_by_pk?: Maybe<Project>;
+  /** delete data from the table: "smart_contract_settings" */
+  delete_smart_contract_settings?: Maybe<Smart_Contract_Settings_Mutation_Response>;
+  /** delete single row from the table: "smart_contract_settings" */
+  delete_smart_contract_settings_by_pk?: Maybe<Smart_Contract_Settings>;
   /** insert data into the table: "nft_attribute" */
   insert_nft_attribute?: Maybe<Nft_Attribute_Mutation_Response>;
   /** insert a single row into the table: "nft_attribute" */
@@ -90,6 +107,10 @@ export type Mutation_Root = {
   insert_project?: Maybe<Project_Mutation_Response>;
   /** insert a single row into the table: "project" */
   insert_project_one?: Maybe<Project>;
+  /** insert data into the table: "smart_contract_settings" */
+  insert_smart_contract_settings?: Maybe<Smart_Contract_Settings_Mutation_Response>;
+  /** insert a single row into the table: "smart_contract_settings" */
+  insert_smart_contract_settings_one?: Maybe<Smart_Contract_Settings>;
   /** update data of the table: "nft_attribute" */
   update_nft_attribute?: Maybe<Nft_Attribute_Mutation_Response>;
   /** update single row of the table: "nft_attribute" */
@@ -102,6 +123,10 @@ export type Mutation_Root = {
   update_project?: Maybe<Project_Mutation_Response>;
   /** update single row of the table: "project" */
   update_project_by_pk?: Maybe<Project>;
+  /** update data of the table: "smart_contract_settings" */
+  update_smart_contract_settings?: Maybe<Smart_Contract_Settings_Mutation_Response>;
+  /** update single row of the table: "smart_contract_settings" */
+  update_smart_contract_settings_by_pk?: Maybe<Smart_Contract_Settings>;
 };
 
 
@@ -137,6 +162,18 @@ export type Mutation_RootDelete_ProjectArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Project_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Smart_Contract_SettingsArgs = {
+  where: Smart_Contract_Settings_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Smart_Contract_Settings_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
@@ -184,6 +221,20 @@ export type Mutation_RootInsert_Project_OneArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_Smart_Contract_SettingsArgs = {
+  objects: Array<Smart_Contract_Settings_Insert_Input>;
+  on_conflict?: InputMaybe<Smart_Contract_Settings_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Smart_Contract_Settings_OneArgs = {
+  object: Smart_Contract_Settings_Insert_Input;
+  on_conflict?: InputMaybe<Smart_Contract_Settings_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Nft_AttributeArgs = {
   _set?: InputMaybe<Nft_Attribute_Set_Input>;
   where: Nft_Attribute_Bool_Exp;
@@ -224,6 +275,22 @@ export type Mutation_RootUpdate_ProjectArgs = {
 export type Mutation_RootUpdate_Project_By_PkArgs = {
   _set?: InputMaybe<Project_Set_Input>;
   pk_columns: Project_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Smart_Contract_SettingsArgs = {
+  _inc?: InputMaybe<Smart_Contract_Settings_Inc_Input>;
+  _set?: InputMaybe<Smart_Contract_Settings_Set_Input>;
+  where: Smart_Contract_Settings_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Smart_Contract_Settings_By_PkArgs = {
+  _inc?: InputMaybe<Smart_Contract_Settings_Inc_Input>;
+  _set?: InputMaybe<Smart_Contract_Settings_Set_Input>;
+  pk_columns: Smart_Contract_Settings_Pk_Columns_Input;
 };
 
 /** columns and relationships of "nft_attribute" */
@@ -1053,6 +1120,12 @@ export type Query_Root = {
   project_aggregate: Project_Aggregate;
   /** fetch data from the table: "project" using primary key columns */
   project_by_pk?: Maybe<Project>;
+  /** fetch data from the table: "smart_contract_settings" */
+  smart_contract_settings: Array<Smart_Contract_Settings>;
+  /** fetch aggregated fields from the table: "smart_contract_settings" */
+  smart_contract_settings_aggregate: Smart_Contract_Settings_Aggregate;
+  /** fetch data from the table: "smart_contract_settings" using primary key columns */
+  smart_contract_settings_by_pk?: Maybe<Smart_Contract_Settings>;
 };
 
 
@@ -1124,6 +1197,327 @@ export type Query_RootProject_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
+
+export type Query_RootSmart_Contract_SettingsArgs = {
+  distinct_on?: InputMaybe<Array<Smart_Contract_Settings_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Smart_Contract_Settings_Order_By>>;
+  where?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+};
+
+
+export type Query_RootSmart_Contract_Settings_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Smart_Contract_Settings_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Smart_Contract_Settings_Order_By>>;
+  where?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+};
+
+
+export type Query_RootSmart_Contract_Settings_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
+/** columns and relationships of "smart_contract_settings" */
+export type Smart_Contract_Settings = {
+  __typename?: 'smart_contract_settings';
+  created_at: Scalars['timestamptz'];
+  has_allowlist: Scalars['Boolean'];
+  id: Scalars['uuid'];
+  mint_price?: Maybe<Scalars['Int']>;
+  presale_mint_price?: Maybe<Scalars['Int']>;
+  presale_token_limit?: Maybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
+  project_id: Scalars['uuid'];
+  updated_at: Scalars['timestamptz'];
+  wallet_mint_limit?: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "smart_contract_settings" */
+export type Smart_Contract_Settings_Aggregate = {
+  __typename?: 'smart_contract_settings_aggregate';
+  aggregate?: Maybe<Smart_Contract_Settings_Aggregate_Fields>;
+  nodes: Array<Smart_Contract_Settings>;
+};
+
+/** aggregate fields of "smart_contract_settings" */
+export type Smart_Contract_Settings_Aggregate_Fields = {
+  __typename?: 'smart_contract_settings_aggregate_fields';
+  avg?: Maybe<Smart_Contract_Settings_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Smart_Contract_Settings_Max_Fields>;
+  min?: Maybe<Smart_Contract_Settings_Min_Fields>;
+  stddev?: Maybe<Smart_Contract_Settings_Stddev_Fields>;
+  stddev_pop?: Maybe<Smart_Contract_Settings_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Smart_Contract_Settings_Stddev_Samp_Fields>;
+  sum?: Maybe<Smart_Contract_Settings_Sum_Fields>;
+  var_pop?: Maybe<Smart_Contract_Settings_Var_Pop_Fields>;
+  var_samp?: Maybe<Smart_Contract_Settings_Var_Samp_Fields>;
+  variance?: Maybe<Smart_Contract_Settings_Variance_Fields>;
+};
+
+
+/** aggregate fields of "smart_contract_settings" */
+export type Smart_Contract_Settings_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Smart_Contract_Settings_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Smart_Contract_Settings_Avg_Fields = {
+  __typename?: 'smart_contract_settings_avg_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "smart_contract_settings". All fields are combined with a logical 'AND'. */
+export type Smart_Contract_Settings_Bool_Exp = {
+  _and?: InputMaybe<Array<Smart_Contract_Settings_Bool_Exp>>;
+  _not?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+  _or?: InputMaybe<Array<Smart_Contract_Settings_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  has_allowlist?: InputMaybe<Boolean_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  mint_price?: InputMaybe<Int_Comparison_Exp>;
+  presale_mint_price?: InputMaybe<Int_Comparison_Exp>;
+  presale_token_limit?: InputMaybe<Int_Comparison_Exp>;
+  presale_wallet_mint_limit?: InputMaybe<Int_Comparison_Exp>;
+  project_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  wallet_mint_limit?: InputMaybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "smart_contract_settings" */
+export enum Smart_Contract_Settings_Constraint {
+  /** unique or primary key constraint */
+  SmartContractSettingsPkey = 'smart_contract_settings_pkey',
+  /** unique or primary key constraint */
+  SmartContractSettingsProjectIdKey = 'smart_contract_settings_project_id_key'
+}
+
+/** input type for incrementing numeric columns in table "smart_contract_settings" */
+export type Smart_Contract_Settings_Inc_Input = {
+  mint_price?: InputMaybe<Scalars['Int']>;
+  presale_mint_price?: InputMaybe<Scalars['Int']>;
+  presale_token_limit?: InputMaybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+  wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "smart_contract_settings" */
+export type Smart_Contract_Settings_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  has_allowlist?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  mint_price?: InputMaybe<Scalars['Int']>;
+  presale_mint_price?: InputMaybe<Scalars['Int']>;
+  presale_token_limit?: InputMaybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+  project_id?: InputMaybe<Scalars['uuid']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Smart_Contract_Settings_Max_Fields = {
+  __typename?: 'smart_contract_settings_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  mint_price?: Maybe<Scalars['Int']>;
+  presale_mint_price?: Maybe<Scalars['Int']>;
+  presale_token_limit?: Maybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
+  project_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  wallet_mint_limit?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Smart_Contract_Settings_Min_Fields = {
+  __typename?: 'smart_contract_settings_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']>;
+  id?: Maybe<Scalars['uuid']>;
+  mint_price?: Maybe<Scalars['Int']>;
+  presale_mint_price?: Maybe<Scalars['Int']>;
+  presale_token_limit?: Maybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
+  project_id?: Maybe<Scalars['uuid']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  wallet_mint_limit?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "smart_contract_settings" */
+export type Smart_Contract_Settings_Mutation_Response = {
+  __typename?: 'smart_contract_settings_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Smart_Contract_Settings>;
+};
+
+/** on_conflict condition type for table "smart_contract_settings" */
+export type Smart_Contract_Settings_On_Conflict = {
+  constraint: Smart_Contract_Settings_Constraint;
+  update_columns?: Array<Smart_Contract_Settings_Update_Column>;
+  where?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "smart_contract_settings". */
+export type Smart_Contract_Settings_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  has_allowlist?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  mint_price?: InputMaybe<Order_By>;
+  presale_mint_price?: InputMaybe<Order_By>;
+  presale_token_limit?: InputMaybe<Order_By>;
+  presale_wallet_mint_limit?: InputMaybe<Order_By>;
+  project_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  wallet_mint_limit?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: smart_contract_settings */
+export type Smart_Contract_Settings_Pk_Columns_Input = {
+  id: Scalars['uuid'];
+};
+
+/** select columns of table "smart_contract_settings" */
+export enum Smart_Contract_Settings_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  HasAllowlist = 'has_allowlist',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MintPrice = 'mint_price',
+  /** column name */
+  PresaleMintPrice = 'presale_mint_price',
+  /** column name */
+  PresaleTokenLimit = 'presale_token_limit',
+  /** column name */
+  PresaleWalletMintLimit = 'presale_wallet_mint_limit',
+  /** column name */
+  ProjectId = 'project_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  WalletMintLimit = 'wallet_mint_limit'
+}
+
+/** input type for updating data in table "smart_contract_settings" */
+export type Smart_Contract_Settings_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']>;
+  has_allowlist?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['uuid']>;
+  mint_price?: InputMaybe<Scalars['Int']>;
+  presale_mint_price?: InputMaybe<Scalars['Int']>;
+  presale_token_limit?: InputMaybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+  project_id?: InputMaybe<Scalars['uuid']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']>;
+  wallet_mint_limit?: InputMaybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Smart_Contract_Settings_Stddev_Fields = {
+  __typename?: 'smart_contract_settings_stddev_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Smart_Contract_Settings_Stddev_Pop_Fields = {
+  __typename?: 'smart_contract_settings_stddev_pop_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Smart_Contract_Settings_Stddev_Samp_Fields = {
+  __typename?: 'smart_contract_settings_stddev_samp_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate sum on columns */
+export type Smart_Contract_Settings_Sum_Fields = {
+  __typename?: 'smart_contract_settings_sum_fields';
+  mint_price?: Maybe<Scalars['Int']>;
+  presale_mint_price?: Maybe<Scalars['Int']>;
+  presale_token_limit?: Maybe<Scalars['Int']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Int']>;
+  wallet_mint_limit?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "smart_contract_settings" */
+export enum Smart_Contract_Settings_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  HasAllowlist = 'has_allowlist',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  MintPrice = 'mint_price',
+  /** column name */
+  PresaleMintPrice = 'presale_mint_price',
+  /** column name */
+  PresaleTokenLimit = 'presale_token_limit',
+  /** column name */
+  PresaleWalletMintLimit = 'presale_wallet_mint_limit',
+  /** column name */
+  ProjectId = 'project_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  WalletMintLimit = 'wallet_mint_limit'
+}
+
+/** aggregate var_pop on columns */
+export type Smart_Contract_Settings_Var_Pop_Fields = {
+  __typename?: 'smart_contract_settings_var_pop_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Smart_Contract_Settings_Var_Samp_Fields = {
+  __typename?: 'smart_contract_settings_var_samp_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Smart_Contract_Settings_Variance_Fields = {
+  __typename?: 'smart_contract_settings_variance_fields';
+  mint_price?: Maybe<Scalars['Float']>;
+  presale_mint_price?: Maybe<Scalars['Float']>;
+  presale_token_limit?: Maybe<Scalars['Float']>;
+  presale_wallet_mint_limit?: Maybe<Scalars['Float']>;
+  wallet_mint_limit?: Maybe<Scalars['Float']>;
+};
+
 export type Subscription_Root = {
   __typename?: 'subscription_root';
   /** fetch data from the table: "nft_attribute" */
@@ -1144,6 +1538,12 @@ export type Subscription_Root = {
   project_aggregate: Project_Aggregate;
   /** fetch data from the table: "project" using primary key columns */
   project_by_pk?: Maybe<Project>;
+  /** fetch data from the table: "smart_contract_settings" */
+  smart_contract_settings: Array<Smart_Contract_Settings>;
+  /** fetch aggregated fields from the table: "smart_contract_settings" */
+  smart_contract_settings_aggregate: Smart_Contract_Settings_Aggregate;
+  /** fetch data from the table: "smart_contract_settings" using primary key columns */
+  smart_contract_settings_by_pk?: Maybe<Smart_Contract_Settings>;
 };
 
 
@@ -1215,6 +1615,29 @@ export type Subscription_RootProject_By_PkArgs = {
   id: Scalars['uuid'];
 };
 
+
+export type Subscription_RootSmart_Contract_SettingsArgs = {
+  distinct_on?: InputMaybe<Array<Smart_Contract_Settings_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Smart_Contract_Settings_Order_By>>;
+  where?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+};
+
+
+export type Subscription_RootSmart_Contract_Settings_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Smart_Contract_Settings_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Smart_Contract_Settings_Order_By>>;
+  where?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+};
+
+
+export type Subscription_RootSmart_Contract_Settings_By_PkArgs = {
+  id: Scalars['uuid'];
+};
+
 /** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
 export type Timestamptz_Comparison_Exp = {
   _eq?: InputMaybe<Scalars['timestamptz']>;
@@ -1279,6 +1702,13 @@ export type GetProjectQueryVariables = Exact<{
 
 
 export type GetProjectQuery = { __typename?: 'query_root', project_by_pk?: { __typename?: 'project', created_at?: any | null, description?: string | null, id: any, metadata_cid?: string | null, name: string, updated_at?: any | null } | null };
+
+export type GetSmartContractSettingsQueryVariables = Exact<{
+  project_id: Scalars['uuid'];
+}>;
+
+
+export type GetSmartContractSettingsQuery = { __typename?: 'query_root', smart_contract_settings: Array<{ __typename?: 'smart_contract_settings', id: any, has_allowlist: boolean, mint_price?: number | null, presale_mint_price?: number | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }> };
 
 
 export const CreateProjectDocument = gql`
@@ -1492,3 +1922,44 @@ export function useGetProjectLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type GetProjectQueryHookResult = ReturnType<typeof useGetProjectQuery>;
 export type GetProjectLazyQueryHookResult = ReturnType<typeof useGetProjectLazyQuery>;
 export type GetProjectQueryResult = Apollo.QueryResult<GetProjectQuery, GetProjectQueryVariables>;
+export const GetSmartContractSettingsDocument = gql`
+    query GetSmartContractSettings($project_id: uuid!) {
+  smart_contract_settings(where: {project_id: {_eq: $project_id}}) {
+    id
+    has_allowlist
+    mint_price
+    presale_mint_price
+    presale_token_limit
+    presale_wallet_mint_limit
+    wallet_mint_limit
+  }
+}
+    `;
+
+/**
+ * __useGetSmartContractSettingsQuery__
+ *
+ * To run a query within a React component, call `useGetSmartContractSettingsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetSmartContractSettingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetSmartContractSettingsQuery({
+ *   variables: {
+ *      project_id: // value for 'project_id'
+ *   },
+ * });
+ */
+export function useGetSmartContractSettingsQuery(baseOptions: Apollo.QueryHookOptions<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>(GetSmartContractSettingsDocument, options);
+      }
+export function useGetSmartContractSettingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>(GetSmartContractSettingsDocument, options);
+        }
+export type GetSmartContractSettingsQueryHookResult = ReturnType<typeof useGetSmartContractSettingsQuery>;
+export type GetSmartContractSettingsLazyQueryHookResult = ReturnType<typeof useGetSmartContractSettingsLazyQuery>;
+export type GetSmartContractSettingsQueryResult = Apollo.QueryResult<GetSmartContractSettingsQuery, GetSmartContractSettingsQueryVariables>;
