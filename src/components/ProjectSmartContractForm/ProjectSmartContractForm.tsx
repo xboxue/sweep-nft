@@ -1,17 +1,12 @@
-import {
-  Box,
-  Divider,
-  Paper,
-  Skeleton,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Skeleton, Stack, Typography } from "@mui/material";
+import { formatEther } from "ethers/lib/utils";
 import { Formik } from "formik";
 import { useParams } from "react-router-dom";
 import {
   Smart_Contract_Settings,
   useGetSmartContractSettingsQuery,
 } from "../../generated/graphql";
+import FormikSaveBar from "../common/FormikSaveBar/FormikSaveBar";
 import FormikSwitch from "../common/FormikSwitch/FormikSwitch";
 import FormikTextField from "../common/FormikTextField/FormikTextField";
 
@@ -22,8 +17,10 @@ const getInitialValues = (settings: Smart_Contract_Settings) => {
     hasPresaleTokenLimit: !!settings.presale_token_limit,
     hasMintPrice: !!settings.mint_price,
     hasWalletMintLimit: !!settings.wallet_mint_limit,
-    mintPrice: settings.mint_price || 0.1,
-    presaleMintPrice: settings.presale_mint_price || 0.1,
+    mintPrice: settings.mint_price ? formatEther(settings.mint_price) : "0.1",
+    presaleMintPrice: settings.presale_mint_price
+      ? formatEther(settings.presale_mint_price)
+      : "0.1",
     walletMintLimit: settings.wallet_mint_limit || 10,
     presaleTokenLimit: settings.presale_token_limit || 1000,
   };
@@ -44,7 +41,7 @@ const ProjectSmartContractForm = () => {
       </Typography>
       <Divider />
       <Formik
-        initialValues={getInitialValues(data?.smart_contract_settings)}
+        initialValues={getInitialValues(data?.smart_contract_settings[0])}
         onSubmit={() => {
           console.log();
         }}
@@ -113,6 +110,7 @@ const ProjectSmartContractForm = () => {
                 field="walletMintLimit"
               />
             )}
+            <FormikSaveBar />
           </Stack>
         )}
       </Formik>
