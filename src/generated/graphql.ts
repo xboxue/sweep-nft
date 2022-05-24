@@ -1391,7 +1391,7 @@ export type UpdateProjectMetadataCidMutationHookResult = ReturnType<typeof useUp
 export type UpdateProjectMetadataCidMutationResult = Apollo.MutationResult<UpdateProjectMetadataCidMutation>;
 export type UpdateProjectMetadataCidMutationOptions = Apollo.BaseMutationOptions<UpdateProjectMetadataCidMutation, UpdateProjectMetadataCidMutationVariables>;
 export const GetNftMetadataDocument = gql`
-    query GetNFTMetadata($project_id: uuid!, $limit: Int = 50, $offset: Int = 0, $order_by: [nft_metadata_order_by!] = {}) {
+    query GetNFTMetadata($project_id: uuid!, $limit: Int, $offset: Int = 0, $order_by: [nft_metadata_order_by!] = {}) {
   nft_metadata(
     where: {project_id: {_eq: $project_id}}
     order_by: $order_by

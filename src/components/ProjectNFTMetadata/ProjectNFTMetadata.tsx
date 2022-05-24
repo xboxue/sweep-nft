@@ -13,8 +13,6 @@ const ProjectNFTMetadata = () => {
     },
   });
 
-  if (loading) return <Skeleton />;
-
   return (
     <Box sx={{ mx: 8 }}>
       <Typography variant="h6" sx={{ mb: 1 }}>
@@ -23,14 +21,17 @@ const ProjectNFTMetadata = () => {
       <Divider />
       <Stack spacing={2} sx={{ mt: 2 }}>
         <NFTMetadataTable
-          rows={data?.nft_metadata.map(nft => ({
-            ...nft,
-            image: nft.image.replace(
-              "ipfs://",
-              "https://nftstorage.link/ipfs/"
-            ),
-            attributes: nft.nft_attributes,
-          }))}
+          loading={loading}
+          rows={
+            data?.nft_metadata?.map(nft => ({
+              ...nft,
+              image: nft.image.replace(
+                "ipfs://",
+                "https://nftstorage.link/ipfs/"
+              ),
+              attributes: nft.nft_attributes,
+            })) || []
+          }
           traits={data?.nft_attribute_aggregate.nodes.map(
             node => node.trait_type
           )}

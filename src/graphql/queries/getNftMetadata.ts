@@ -3,7 +3,7 @@ import { gql } from "@apollo/client";
 const GET_NFT_METADATA = gql`
   query GetNFTMetadata(
     $project_id: uuid!
-    $limit: Int = 50
+    $limit: Int
     $offset: Int = 0
     $order_by: [nft_metadata_order_by!] = {}
   ) {
