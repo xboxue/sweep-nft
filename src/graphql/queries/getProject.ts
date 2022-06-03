@@ -8,6 +8,7 @@ const GET_PROJECT = gql`
       id
       metadata_cid
       name
+      symbol
       updated_at
     }
   }

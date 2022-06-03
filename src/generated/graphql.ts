@@ -910,6 +910,7 @@ export type Project = {
   nft_metadata_aggregate: Nft_Metadata_Aggregate;
   /** An object relationship */
   smart_contract_setting?: Maybe<Smart_Contract_Settings>;
+  symbol: Scalars['String'];
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id: Scalars['String'];
 };
@@ -968,6 +969,7 @@ export type Project_Bool_Exp = {
   name?: InputMaybe<String_Comparison_Exp>;
   nft_metadata?: InputMaybe<Nft_Metadata_Bool_Exp>;
   smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Bool_Exp>;
+  symbol?: InputMaybe<String_Comparison_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user_id?: InputMaybe<String_Comparison_Exp>;
 };
@@ -989,6 +991,7 @@ export type Project_Insert_Input = {
   name?: InputMaybe<Scalars['String']>;
   nft_metadata?: InputMaybe<Nft_Metadata_Arr_Rel_Insert_Input>;
   smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Obj_Rel_Insert_Input>;
+  symbol?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   user_id?: InputMaybe<Scalars['String']>;
 };
@@ -1001,6 +1004,7 @@ export type Project_Max_Fields = {
   id?: Maybe<Scalars['uuid']>;
   metadata_cid?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['String']>;
 };
@@ -1013,6 +1017,7 @@ export type Project_Min_Fields = {
   id?: Maybe<Scalars['uuid']>;
   metadata_cid?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
+  symbol?: Maybe<Scalars['String']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
   user_id?: Maybe<Scalars['String']>;
 };
@@ -1049,6 +1054,7 @@ export type Project_Order_By = {
   name?: InputMaybe<Order_By>;
   nft_metadata_aggregate?: InputMaybe<Nft_Metadata_Aggregate_Order_By>;
   smart_contract_setting?: InputMaybe<Smart_Contract_Settings_Order_By>;
+  symbol?: InputMaybe<Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -1071,6 +1077,8 @@ export enum Project_Select_Column {
   /** column name */
   Name = 'name',
   /** column name */
+  Symbol = 'symbol',
+  /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
   UserId = 'user_id'
@@ -1083,6 +1091,7 @@ export type Project_Set_Input = {
   id?: InputMaybe<Scalars['uuid']>;
   metadata_cid?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  symbol?: InputMaybe<Scalars['String']>;
   updated_at?: InputMaybe<Scalars['timestamptz']>;
   user_id?: InputMaybe<Scalars['String']>;
 };
@@ -1099,6 +1108,8 @@ export enum Project_Update_Column {
   MetadataCid = 'metadata_cid',
   /** column name */
   Name = 'name',
+  /** column name */
+  Symbol = 'symbol',
   /** column name */
   UpdatedAt = 'updated_at',
   /** column name */
@@ -1698,7 +1709,7 @@ export type GetProjectQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectQuery = { __typename?: 'query_root', project_by_pk?: { __typename?: 'project', created_at?: any | null, description?: string | null, id: any, metadata_cid?: string | null, name: string, updated_at?: any | null } | null };
+export type GetProjectQuery = { __typename?: 'query_root', project_by_pk?: { __typename?: 'project', created_at?: any | null, description?: string | null, id: any, metadata_cid?: string | null, name: string, symbol: string, updated_at?: any | null } | null };
 
 export type GetProjectNftMetadataQueryVariables = Exact<{
   project_id: Scalars['uuid'];
@@ -1715,7 +1726,7 @@ export type GetProjectSmartContractSettingsQueryVariables = Exact<{
 }>;
 
 
-export type GetProjectSmartContractSettingsQuery = { __typename?: 'query_root', smart_contract_settings: Array<{ __typename?: 'smart_contract_settings', id: any, has_allowlist: boolean, mint_price?: string | null, presale_mint_price?: string | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }> };
+export type GetProjectSmartContractSettingsQuery = { __typename?: 'query_root', smart_contract_settings: Array<{ __typename?: 'smart_contract_settings', id: any, has_allowlist: boolean, mint_price?: string | null, presale_mint_price?: string | null, presale_token_limit?: number | null, presale_wallet_mint_limit?: number | null, wallet_mint_limit?: number | null }>, nft_metadata_aggregate: { __typename?: 'nft_metadata_aggregate', aggregate?: { __typename?: 'nft_metadata_aggregate_fields', count: number } | null } };
 
 
 export const CreateProjectDocument = gql`
@@ -1880,6 +1891,7 @@ export const GetProjectDocument = gql`
     id
     metadata_cid
     name
+    symbol
     updated_at
   }
 }
@@ -1984,6 +1996,11 @@ export const GetProjectSmartContractSettingsDocument = gql`
     presale_token_limit
     presale_wallet_mint_limit
     wallet_mint_limit
+  }
+  nft_metadata_aggregate(where: {project_id: {_eq: $project_id}}) {
+    aggregate {
+      count
+    }
   }
 }
     `;

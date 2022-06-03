@@ -18,8 +18,8 @@ import { useGetProjectQuery } from "../../generated/graphql";
 const items = [
   { title: "Upload images", to: "./upload" },
   { title: "Configure smart contract", to: "./smart-contract" },
-  { title: "Minting site", to: "" },
-  { title: "Deploy for testing", to: "" },
+  { title: "Minting site", to: "./minting-site" },
+  { title: "Deploy for testing", to: "./deploy-test" },
 ];
 
 const ProjectLayout = () => {

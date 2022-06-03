@@ -11,6 +11,11 @@ const GET_PROJECT_SMART_CONTRACT_SETTINGS = gql`
       presale_wallet_mint_limit
       wallet_mint_limit
     }
+    nft_metadata_aggregate(where: { project_id: { _eq: $project_id } }) {
+      aggregate {
+        count
+      }
+    }
   }
 `;
 
